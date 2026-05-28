@@ -1023,7 +1023,7 @@ body.side-panel-open #main { margin-right: 440px; }
       </div>
       <button class="icon-btn" onclick="openSearchMobile()" title="검색"><i class="fa-solid fa-search"></i></button>
       <button class="icon-btn" onclick="openTodoModal()" title="새 투두 추가"><i class="fa-solid fa-plus"></i></button>
-      <button class="icon-btn" onclick="requestNotificationPermission()" title="알림 설정"><i class="fa-solid fa-bell"></i></button>
+      <button class="icon-btn" onclick="toggleNotifications()" title="알림 설정" id="notif-bell-btn"><i class="fa-solid fa-bell"></i></button>
       <button class="icon-btn" onclick="toggleTheme()" title="테마 전환" id="theme-icon"><i class="fa-solid fa-moon"></i></button>
     </div>
 
@@ -1168,53 +1168,40 @@ body.side-panel-open #main { margin-right: 440px; }
       <!-- CALENDAR -->
       <div class="view" id="view-calendar">
         <div class="page-title">캘린더</div>
-        <div class="two-col">
-          <div class="card">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-              <div class="cal-nav">
-                <button class="cal-nav-btn" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-                <span class="cal-month-label" id="cal-month-label"></span>
-                <button class="cal-nav-btn" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
-              </div>
-              <button class="filter-btn" onclick="goToToday()">오늘</button>
-            </div>
-            <div class="calendar-grid" id="cal-header-row"></div>
-            <div class="calendar-grid" id="calendar-grid"></div>
-          </div>
-          <div>
-            <div class="section-header">
-              <div class="section-title" id="cal-selected-label">날짜 선택</div>
-            </div>
-            <div class="cal-detail-panel" id="cal-detail-panel">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
-                <div style="flex:1">
-                  <div class="cal-detail-title" id="cal-detail-title"></div>
-                  <div class="cal-detail-meta" id="cal-detail-meta"></div>
-                  <div class="cal-detail-body" id="cal-detail-body"></div>
-                </div>
-                <button class="icon-btn" onclick="closeCalDetail()" title="닫기"><i class="fa-solid fa-xmark"></i></button>
-              </div>
-              <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap" id="cal-detail-actions"></div>
-            </div>
-            <div id="cal-dday-section" class="cal-goal-section"></div>
-            <div id="cal-monthly-goals-section" class="cal-goal-section"></div>
-            <div id="cal-weekly-goals-section" class="cal-goal-section"></div>
-            <div id="cal-day-todos"></div>
-            <button class="btn-add-todo" style="margin-top:10px;width:100%;justify-content:center" onclick="openTodoModal()"><i class="fa-solid fa-plus"></i>이 날에 추가</button>
-          </div>
+        <!-- View mode tabs -->
+        <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+          <button class="filter-btn" id="cal-tab-month" onclick="setCalViewMode('month')">월</button>
+          <button class="filter-btn" id="cal-tab-week" onclick="setCalViewMode('week')">주</button>
+          <button class="filter-btn" id="cal-tab-day" onclick="setCalViewMode('day')">일</button>
+          <button class="filter-btn" id="cal-tab-agenda" onclick="setCalViewMode('agenda')">일정</button>
+          <span style="display:inline-flex;align-items:center;gap:2px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px 4px">
+            <button class="filter-btn" id="cal-tab-custom-days" onclick="setCalViewMode('custom-days')" style="border:none;padding:3px 7px">사용자설정일</button>
+            <button id="cal-cday-minus" class="cal-nav-btn" onclick="changeCustomDays(-1)" style="width:20px;height:20px;font-size:10px">−</button>
+            <span id="cal-custom-days-num" style="font-size:12px;min-width:14px;text-align:center;font-weight:600"></span>
+            <button id="cal-cday-plus" class="cal-nav-btn" onclick="changeCustomDays(1)" style="width:20px;height:20px;font-size:10px">+</button>
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:2px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px 4px">
+            <button class="filter-btn" id="cal-tab-custom-weeks" onclick="setCalViewMode('custom-weeks')" style="border:none;padding:3px 7px">사용자설정주</button>
+            <button id="cal-cwk-minus" class="cal-nav-btn" onclick="changeCustomWeeks(-1)" style="width:20px;height:20px;font-size:10px">−</button>
+            <span id="cal-custom-weeks-num" style="font-size:12px;min-width:14px;text-align:center;font-weight:600"></span>
+            <button id="cal-cwk-plus" class="cal-nav-btn" onclick="changeCustomWeeks(1)" style="width:20px;height:20px;font-size:10px">+</button>
+          </span>
         </div>
+        <!-- Unified nav bar -->
+        <div id="cal-nav-bar" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="calNavPrev()"><i class="fa-solid fa-chevron-left"></i></button>
+            <span class="cal-month-label" id="cal-nav-label"></span>
+            <button class="cal-nav-btn" onclick="calNavNext()"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+          <button class="filter-btn" onclick="calNavToday()">오늘</button>
+        </div>
+        <!-- Dynamic content area -->
+        <div id="cal-content"></div>
       </div>
 
-      <!-- WEEKLY VIEW -->
-      <div class="view" id="view-weekly">
-        <div class="page-title" style="display:flex;align-items:center;gap:12px">
-          주간 보기
-          <button class="cal-nav-btn" onclick="changeWeek(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-          <span id="week-label" style="font-size:14px;font-weight:500;color:var(--text-secondary)"></span>
-          <button class="cal-nav-btn" onclick="changeWeek(1)"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-        <div class="week-grid" id="week-grid"></div>
-      </div>
+      <!-- WEEKLY VIEW (redirects to calendar week mode) -->
+      <div class="view" id="view-weekly"></div>
 
       <!-- GOALS -->
       <div class="view" id="view-goals">
@@ -1542,7 +1529,7 @@ body.side-panel-open #main { margin-right: 440px; }
                   <span style="font-size:12px;font-weight:600;">캘린더 목록</span>
                   <button class="btn-primary" style="padding:4px 8px;font-size:11px;" onclick="syncGcal()"><i class="fa-solid fa-rotate"></i> 동기화</button>
                 </div>
-                <div id="gcal-calendars" style="max-height:100px;overflow-y:auto;margin-bottom:8px;"></div>
+                <div id="gcal-calendars" style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px;"></div>
               </div>
 
               <!-- Hidden advanced settings inputs to keep variable bindings working -->
@@ -1554,7 +1541,7 @@ body.side-panel-open #main { margin-right: 440px; }
               <hr style="border:none; border-top:1px solid var(--border); margin:12px 0;">
 
               <!-- Manual Token Input -->
-              <div style="margin-bottom:10px;">
+              <div id="gcal-manual-token-section" style="margin-bottom:10px;">
                 <div style="font-size:13px;font-weight:600;margin-bottom:6px;">토큰 직접 입력 연동</div>
                 <p style="font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.4">개발자 설정 없이 발급한 Google OAuth Access Token을 직접 입력하여 즉시 동기화합니다.</p>
                 <div style="display:flex;gap:8px;">
@@ -1563,19 +1550,6 @@ body.side-panel-open #main { margin-right: 440px; }
                 </div>
               </div>
 
-              <hr style="border:none; border-top:1px solid var(--border); margin:12px 0;">
-
-              <!-- iCal File Upload -->
-              <div>
-                <div style="font-size:13px;font-weight:600;margin-bottom:6px;">iCal (.ics) 파일 가져오기</div>
-                <p style="font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.4">구글 캘린더에서 내보낸 .ics 파일을 업로드하여 100% 로컬 오프라인 상태로 일정을 즉시 임포트합니다.</p>
-                <div class="attach-dropzone" id="ical-dropzone" style="padding:15px; font-size:11px; border-style:dashed; cursor:pointer;"
-                     ondragover="handleIcalDragOver(event)" ondragleave="handleIcalDragLeave(event)" ondrop="handleIcalDrop(event)" onclick="document.getElementById('ical-file-input').click()">
-                  <i class="fa-solid fa-calendar-check" style="font-size:18px;margin-bottom:4px;display:block;"></i>
-                  .ics 파일을 여기에 드래그하거나 클릭하여 업로드
-                </div>
-                <input type="file" id="ical-file-input" accept=".ics" style="display:none" onchange="handleIcalFileSelect(event)">
-              </div>
             </div>
             <div class="section-title" style="margin-bottom:12px">크로스 디바이스 동기화</div>
             <div class="card" style="margin-bottom:16px">
@@ -1960,7 +1934,8 @@ let state = {
   listViewModes: {}, hideCompleted: false,
   notes: [], noteEditColor: '#1e1e2e', hiddenMenus: [], currentAttachments: [],
   miniCalStartMonth: null, miniCalDueMonth: null,
-  tagColors: {}, syncCode: '', syncEnabled: false
+  tagColors: {}, syncCode: '', syncEnabled: false,
+  calViewMode: 'month', calCustomDays: 3, calCustomWeeks: 2, calCustomDayStart: null, notifEnabled: true
 };
 const DEFAULT_MENU_ORDER = ['dashboard','dump','today','upcoming','goals','weekly','calendar','dday','pomodoro','matrix','habits','notes','gcal','settings'];
 const GOOGLE_CALENDAR_SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events';
@@ -2003,6 +1978,10 @@ function load() {
   if(!state.tagColors) state.tagColors = {};
   if(!state.syncCode) state.syncCode = '';
   if(state.syncEnabled === undefined) state.syncEnabled = false;
+  if(!state.calViewMode) state.calViewMode = 'month';
+  if(!state.calCustomDays || state.calCustomDays < 1) state.calCustomDays = 3;
+  if(!state.calCustomWeeks || state.calCustomWeeks < 1) state.calCustomWeeks = 2;
+  if(state.notifEnabled === undefined) state.notifEnabled = true;
   migrateTodoPriorityMatrix();
   migratePriorityLabels();
   applyToastPosition();
@@ -2704,6 +2683,7 @@ function initSidebarSort() {
 
 // ========== VIEWS ==========
 function switchView(v, btn) {
+  if(v === 'weekly') { state.calViewMode = 'week'; v = 'calendar'; }
   clearSidebarDragState();
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   const viewEl = document.getElementById('view-' + v);
@@ -3411,11 +3391,104 @@ function showCalDetailBigGoal(type, key) {
 }
 
 // ========== CALENDAR ==========
+// -------- CAL VIEW MODE HELPERS --------
+function setCalViewMode(mode) { state.calViewMode = mode; save(); renderCalendar(); }
+function changeCustomDays(dir) {
+  state.calCustomDays = Math.max(1, Math.min(7, (state.calCustomDays||3) + dir));
+  save(); renderCalendar();
+}
+function changeCustomWeeks(dir) {
+  state.calCustomWeeks = Math.max(1, Math.min(4, (state.calCustomWeeks||2) + dir));
+  save(); renderCalendar();
+}
+function calNavPrev() {
+  const mode = state.calViewMode || 'month';
+  if(mode==='month') { changeMonth(-1); return; }
+  if(mode==='week') { state.weekOffset -= 1; save(); renderCalendar(); return; }
+  if(mode==='day') {
+    const d = new Date((state.calSelectedDate||todayStr())+'T12:00:00'); d.setDate(d.getDate()-1);
+    state.calSelectedDate = d.toISOString().split('T')[0]; renderCalendar(); return;
+  }
+  if(mode==='custom-days') {
+    const d = new Date((state.calCustomDayStart||todayStr())+'T12:00:00');
+    d.setDate(d.getDate() - (state.calCustomDays||3));
+    state.calCustomDayStart = d.toISOString().split('T')[0]; renderCalendar(); return;
+  }
+  if(mode==='custom-weeks') { state.weekOffset -= (state.calCustomWeeks||2); save(); renderCalendar(); return; }
+}
+function calNavNext() {
+  const mode = state.calViewMode || 'month';
+  if(mode==='month') { changeMonth(1); return; }
+  if(mode==='week') { state.weekOffset += 1; save(); renderCalendar(); return; }
+  if(mode==='day') {
+    const d = new Date((state.calSelectedDate||todayStr())+'T12:00:00'); d.setDate(d.getDate()+1);
+    state.calSelectedDate = d.toISOString().split('T')[0]; renderCalendar(); return;
+  }
+  if(mode==='custom-days') {
+    const d = new Date((state.calCustomDayStart||todayStr())+'T12:00:00');
+    d.setDate(d.getDate() + (state.calCustomDays||3));
+    state.calCustomDayStart = d.toISOString().split('T')[0]; renderCalendar(); return;
+  }
+  if(mode==='custom-weeks') { state.weekOffset += (state.calCustomWeeks||2); save(); renderCalendar(); return; }
+}
+function calNavToday() {
+  const mode = state.calViewMode || 'month';
+  if(mode==='month') { goToToday(); return; }
+  if(mode==='day') { state.calSelectedDate = todayStr(); renderCalendar(); return; }
+  if(mode==='custom-days') { state.calCustomDayStart = todayStr(); renderCalendar(); return; }
+  state.weekOffset = 0; save(); renderCalendar();
+}
 function renderCalendar() {
+  const mode = state.calViewMode || 'month';
+  ['month','week','day','agenda','custom-days','custom-weeks'].forEach(m => {
+    const tab = document.getElementById(`cal-tab-${m}`);
+    if(tab) tab.classList.toggle('active', mode===m);
+  });
+  const dNum = document.getElementById('cal-custom-days-num');
+  const wNum = document.getElementById('cal-custom-weeks-num');
+  const cd = state.calCustomDays||3, cw = state.calCustomWeeks||2;
+  if(dNum) dNum.textContent = cd;
+  if(wNum) wNum.textContent = cw;
+  const dm = document.getElementById('cal-cday-minus'), dp = document.getElementById('cal-cday-plus');
+  const wm = document.getElementById('cal-cwk-minus'),  wp = document.getElementById('cal-cwk-plus');
+  if(dm) { dm.disabled = cd<=1; dm.style.opacity = cd<=1?'0.35':'1'; dm.style.cursor = cd<=1?'not-allowed':'pointer'; }
+  if(dp) { dp.disabled = cd>=7; dp.style.opacity = cd>=7?'0.35':'1'; dp.style.cursor = cd>=7?'not-allowed':'pointer'; }
+  if(wm) { wm.disabled = cw<=1; wm.style.opacity = cw<=1?'0.35':'1'; wm.style.cursor = cw<=1?'not-allowed':'pointer'; }
+  if(wp) { wp.disabled = cw>=4; wp.style.opacity = cw>=4?'0.35':'1'; wp.style.cursor = cw>=4?'not-allowed':'pointer'; }
+  const navBar = document.getElementById('cal-nav-bar');
+  if(navBar) navBar.style.display = mode==='agenda' ? 'none' : 'flex';
+  if(mode==='month')        { _renderCalMonth(); return; }
+  if(mode==='week')         { _renderCalWeekView(); return; }
+  if(mode==='day')          { _renderCalDayView(); return; }
+  if(mode==='agenda')       { _renderCalAgenda(); return; }
+  if(mode==='custom-days')  { _renderCalCustomDays(); return; }
+  if(mode==='custom-weeks') { _renderCalCustomWeeks(); return; }
+}
+function _calRightPanelHtml() {
+  return `
+    <div class="section-header"><div class="section-title" id="cal-selected-label">날짜 선택</div></div>
+    <div class="cal-detail-panel" id="cal-detail-panel" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+        <div style="flex:1">
+          <div class="cal-detail-title" id="cal-detail-title"></div>
+          <div class="cal-detail-meta" id="cal-detail-meta"></div>
+          <div class="cal-detail-body" id="cal-detail-body"></div>
+        </div>
+        <button class="icon-btn" onclick="closeCalDetail()" title="닫기"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap" id="cal-detail-actions"></div>
+    </div>
+    <div id="cal-dday-section" class="cal-goal-section"></div>
+    <div id="cal-monthly-goals-section" class="cal-goal-section"></div>
+    <div id="cal-weekly-goals-section" class="cal-goal-section"></div>
+    <div id="cal-day-todos"></div>
+    <button class="btn-add-todo" style="margin-top:10px;width:100%;justify-content:center" onclick="openTodoModal()"><i class="fa-solid fa-plus"></i>이 날에 추가</button>`;
+}
+function _renderCalMonth() {
   const yr = state.calYear, mo = state.calMonth;
+  const navLabel = document.getElementById('cal-nav-label');
+  if(navLabel) navLabel.textContent = `${yr}년 ${mo+1}월`;
   const days = ['일','월','화','수','목','금','토'];
-  document.getElementById('cal-header-row').innerHTML = days.map(d=>`<div class="cal-header">${d}</div>`).join('');
-  document.getElementById('cal-month-label').textContent = `${yr}년 ${mo+1}월`;
   const first = new Date(yr, mo, 1).getDay();
   const daysInMonth = new Date(yr, mo+1, 0).getDate();
   const prevDays = new Date(yr, mo, 0).getDate();
@@ -3423,21 +3496,142 @@ function renderCalendar() {
   for(let i=0;i<first;i++) { const d=prevDays-first+1+i; cells+=`<div class="cal-day other-month"><span class="cal-num">${d}</span></div>`; }
   const td = todayStr();
   for(let d=1;d<=daysInMonth;d++) {
-    const dStr = `${yr}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isToday = dStr===td;
-    const isSel = dStr===state.calSelectedDate;
-    const dueTodos = state.todos.filter(t=>t.due===dStr);
-    const startTodos = state.todos.filter(t=>t.start===dStr && t.due!==dStr);
-    const ddayOn = state.ddays.some(dd=>dd.date===dStr);
-    const dots = (dueTodos.length?'<div class="cal-dot"></div>':'') + (startTodos.length?'<div class="cal-dot cal-dot-start"></div>':'') + (ddayOn?'<div class="cal-dot cal-dot-dday"></div>':'');
-    cells += `<div class="cal-day ${isToday?'today':''} ${isSel?'selected':''}" onclick="selectCalDay('${dStr}')">
-      <span class="cal-num">${d}</span>${dots}
+    const dStr=`${yr}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=dStr===td, isSel=dStr===state.calSelectedDate;
+    const dueTodos=state.todos.filter(t=>t.due===dStr);
+    const startTodos=state.todos.filter(t=>t.start===dStr&&t.due!==dStr);
+    const ddayOn=state.ddays.some(dd=>dd.date===dStr);
+    const gcalOn=(state.gcal.events||[]).some(e=>e.date===dStr);
+    const dots=(dueTodos.length?'<div class="cal-dot"></div>':'')+(startTodos.length?'<div class="cal-dot cal-dot-start"></div>':'')+(ddayOn?'<div class="cal-dot cal-dot-dday"></div>':'')+(gcalOn?'<div class="cal-dot" style="background:#4285f4;flex-shrink:0"></div>':'');
+    cells+=`<div class="cal-day ${isToday?'today':''} ${isSel?'selected':''}" onclick="selectCalDay('${dStr}')"><span class="cal-num">${d}</span>${dots}</div>`;
+  }
+  const remaining=42-first-daysInMonth;
+  for(let i=1;i<=remaining;i++) cells+=`<div class="cal-day other-month"><span class="cal-num">${i}</span></div>`;
+  document.getElementById('cal-content').innerHTML=`
+    <div class="two-col">
+      <div class="card">
+        <div class="calendar-grid">${days.map(d=>`<div class="cal-header">${d}</div>`).join('')}</div>
+        <div class="calendar-grid" id="calendar-grid">${cells}</div>
+      </div>
+      <div>${_calRightPanelHtml()}</div>
+    </div>`;
+  if(state.calSelectedDate) renderCalDayTodos();
+}
+function _renderCalWeekView() {
+  const days=['일','월','화','수','목','금','토'];
+  const now=new Date(); now.setHours(0,0,0,0);
+  const sow=new Date(now); sow.setDate(now.getDate()-now.getDay()+(state.weekOffset||0)*7);
+  const eow=new Date(sow); eow.setDate(sow.getDate()+6);
+  const navLabel=document.getElementById('cal-nav-label');
+  if(navLabel) navLabel.textContent=`${fmtFull(sow.toISOString().split('T')[0])} ~ ${fmtFull(eow.toISOString().split('T')[0])}`;
+  let html='';
+  for(let i=0;i<7;i++){
+    const d=new Date(sow); d.setDate(sow.getDate()+i);
+    const dStr=d.toISOString().split('T')[0], isToday=dStr===todayStr();
+    const dayTodos=state.todos.filter(t=>t.due===dStr);
+    const gcalEvts=(state.gcal.events||[]).filter(e=>e.date===dStr);
+    html+=`<div class="week-col ${isToday?'today-col':''}">
+      <div class="week-col-header">${days[d.getDay()]}</div>
+      <div class="week-col-date">${d.getDate()}</div>
+      ${gcalEvts.map(e=>`<div class="week-todo" style="background:#4285f4;color:#fff;opacity:0.9">${e.time?e.time+' ':''}<i class="fa-brands fa-google" style="font-size:9px"></i> ${e.title}</div>`).join('')}
+      ${dayTodos.map(t=>`<div class="week-todo" onclick="openTodoModal('${t.id}')" title="${t.title}">${t.title}</div>`).join('')}
     </div>`;
   }
-  const remaining = 42 - first - daysInMonth;
-  for(let i=1;i<=remaining;i++) cells+=`<div class="cal-day other-month"><span class="cal-num">${i}</span></div>`;
-  document.getElementById('calendar-grid').innerHTML = cells;
-  if(state.calSelectedDate) renderCalDayTodos();
+  document.getElementById('cal-content').innerHTML=`<div class="week-grid">${html}</div>`;
+}
+function _renderCalDayView() {
+  const d=state.calSelectedDate||todayStr();
+  if(!state.calSelectedDate) state.calSelectedDate=d;
+  const navLabel=document.getElementById('cal-nav-label');
+  if(navLabel) navLabel.textContent=fmtFull(d);
+  const todos=filterHideCompleted(state.todos.filter(t=>t.due===d||t.start===d));
+  const gcalEvts=(state.gcal.events||[]).filter(e=>e.date===d);
+  let html='';
+  if(gcalEvts.length) html+=`<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:600;color:#4285f4;margin-bottom:6px"><i class="fa-brands fa-google"></i> 구글 캘린더</div>`+gcalEvts.map(e=>`<div class="todo-item" style="border-left:3px solid #4285f4"><div style="flex:1"><div style="font-size:14px;font-weight:500">${e.title}</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">${e.time||'종일'}</div></div></div>`).join('')+`</div>`;
+  if(!todos.length&&!gcalEvts.length) html+=`<div class="empty-state"><i class="fa-solid fa-check-circle"></i><p>이 날 할 일이 없습니다</p></div>`;
+  else if(todos.length) html+=sortedTodos(todos).map(t=>{
+    const role=t.due===d&&t.start===d?'시작·마감':t.due===d?'마감':'시작';
+    return `<div class="todo-item" style="cursor:pointer" onclick="openTodoModal('${t.id}')">
+      <div class="priority-dot priority-${t.priority}"></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:500">${t.title}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${role} · ${priorityBadge(t.priority)}</div></div>
+      <button class="todo-action" onclick="event.stopPropagation();openTodoModal('${t.id}')"><i class="fa-solid fa-pen"></i></button>
+    </div>`;
+  }).join('');
+  html+=`<button class="btn-add-todo" style="margin-top:12px;width:100%;justify-content:center" onclick="openTodoModal()"><i class="fa-solid fa-plus"></i>이 날에 추가</button>`;
+  document.getElementById('cal-content').innerHTML=html;
+}
+function _renderCalAgenda() {
+  const todos=filterHideCompleted([...state.todos].filter(t=>t.due||t.start));
+  todos.sort((a,b)=>(a.due||a.start||'').localeCompare(b.due||b.start||''));
+  const td=todayStr();
+  if(!todos.length){ document.getElementById('cal-content').innerHTML=`<div class="empty-state"><i class="fa-solid fa-calendar-check"></i><p>날짜가 있는 투두가 없습니다</p></div>`; return; }
+  let html='', lastDate=null;
+  todos.forEach(t=>{
+    const d=t.due||t.start;
+    if(d!==lastDate){
+      lastDate=d;
+      const isToday=d===td, isPast=d<td;
+      const clr=isToday?'var(--accent)':isPast?'var(--text-muted)':'var(--text-secondary)';
+      html+=`<div style="font-size:12px;font-weight:600;padding:8px 0 4px;color:${clr};border-bottom:1px solid var(--border);margin-bottom:4px">${fmtFull(d)}${isToday?' (오늘)':''}</div>`;
+    }
+    html+=`<div class="todo-item" style="cursor:pointer;margin-bottom:4px" onclick="openTodoModal('${t.id}')">
+      <div class="priority-dot priority-${t.priority}"></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:500;${t.done?'text-decoration:line-through;opacity:0.5':''}">${t.title}</div></div>
+      <button class="todo-action" onclick="event.stopPropagation();openTodoModal('${t.id}')"><i class="fa-solid fa-pen"></i></button>
+    </div>`;
+  });
+  document.getElementById('cal-content').innerHTML=html;
+}
+function _renderCalCustomDays() {
+  const n=state.calCustomDays||3;
+  const startStr=state.calCustomDayStart||todayStr();
+  const startDate=new Date(startStr+'T12:00:00');
+  const endDate=new Date(startDate); endDate.setDate(startDate.getDate()+n-1);
+  const navLabel=document.getElementById('cal-nav-label');
+  if(navLabel) navLabel.textContent=`${fmtFull(startStr)} ~ ${fmtFull(endDate.toISOString().split('T')[0])}`;
+  const days=['일','월','화','수','목','금','토'];
+  let html=`<div style="display:grid;grid-template-columns:repeat(${n},1fr);gap:8px">`;
+  for(let i=0;i<n;i++){
+    const d=new Date(startDate); d.setDate(startDate.getDate()+i);
+    const dStr=d.toISOString().split('T')[0], isToday=dStr===todayStr();
+    const dayTodos=state.todos.filter(t=>t.due===dStr);
+    const gcalEvts=(state.gcal.events||[]).filter(e=>e.date===dStr);
+    html+=`<div class="card ${isToday?'today-col':''}" style="min-height:80px">
+      <div style="font-size:11px;font-weight:600;margin-bottom:6px;color:${isToday?'var(--accent)':'var(--text-secondary)'}">${days[d.getDay()]} ${d.getDate()}일</div>
+      ${gcalEvts.map(e=>`<div class="week-todo" style="background:#4285f4;color:#fff;opacity:0.9;font-size:11px;margin-bottom:3px">${e.time?e.time+' ':''}${e.title}</div>`).join('')}
+      ${dayTodos.map(t=>`<div class="week-todo" onclick="openTodoModal('${t.id}')" style="font-size:11px;margin-bottom:3px" title="${t.title}">${t.title}</div>`).join('')}
+      ${!dayTodos.length&&!gcalEvts.length?'<div style="font-size:11px;color:var(--text-muted)">없음</div>':''}
+    </div>`;
+  }
+  document.getElementById('cal-content').innerHTML=html+'</div>';
+}
+function _renderCalCustomWeeks() {
+  const n=state.calCustomWeeks||2;
+  const now=new Date(); now.setHours(0,0,0,0);
+  const sow=new Date(now); sow.setDate(now.getDate()-now.getDay()+(state.weekOffset||0)*7);
+  const eow=new Date(sow); eow.setDate(sow.getDate()+n*7-1);
+  const navLabel=document.getElementById('cal-nav-label');
+  if(navLabel) navLabel.textContent=`${fmtFull(sow.toISOString().split('T')[0])} ~ ${fmtFull(eow.toISOString().split('T')[0])}`;
+  const days=['일','월','화','수','목','금','토'];
+  let html='';
+  for(let w=0;w<n;w++){
+    html+=`<div class="week-grid" style="margin-bottom:12px">`;
+    for(let i=0;i<7;i++){
+      const d=new Date(sow); d.setDate(sow.getDate()+w*7+i);
+      const dStr=d.toISOString().split('T')[0], isToday=dStr===todayStr();
+      const dayTodos=state.todos.filter(t=>t.due===dStr);
+      const gcalEvts=(state.gcal.events||[]).filter(e=>e.date===dStr);
+      html+=`<div class="week-col ${isToday?'today-col':''}">
+        <div class="week-col-header">${days[d.getDay()]}</div>
+        <div class="week-col-date">${d.getDate()}</div>
+        ${gcalEvts.map(e=>`<div class="week-todo" style="background:#4285f4;color:#fff;opacity:0.9;font-size:10px" title="${e.title}">${e.title}</div>`).join('')}
+        ${dayTodos.map(t=>`<div class="week-todo" onclick="openTodoModal('${t.id}')" title="${t.title}">${t.title}</div>`).join('')}
+      </div>`;
+    }
+    html+='</div>';
+  }
+  document.getElementById('cal-content').innerHTML=html;
 }
 function selectCalDay(d) { state.calSelectedDate = d; closeCalDetail(); renderCalendar(); }
 function renderCalDayTodos() {
@@ -3462,11 +3656,20 @@ function renderCalDayTodos() {
     } else ddaySec.innerHTML = `<div class="cal-goal-section-label">🚩 D-Day</div><div style="font-size:12px;color:var(--text-muted);padding:4px 0">이 날짜 근처 D-Day 없음</div>
       <div class="cal-goal-actions"><button class="filter-btn" style="font-size:11px" onclick="openDdayModalForDate('${d}')">+ D-Day</button></div>`;
   }
+  const gcalEvts = (state.gcal.events||[]).filter(e=>e.date===d);
   let todos = filterHideCompleted(state.todos.filter(t=>t.due===d || t.start===d));
   const el = document.getElementById('cal-day-todos');
   if(!el) return;
-  if(!todos.length) { el.innerHTML = `<div class="empty-state"><i class="fa-solid fa-check-circle"></i><p>이 날 할 일이 없습니다</p></div>`; return; }
-  el.innerHTML = sortedTodos(todos).map(t => {
+  let html = '';
+  if(gcalEvts.length) {
+    html += `<div style="margin-bottom:8px"><div style="font-size:11px;font-weight:600;color:#4285f4;margin-bottom:5px"><i class="fa-brands fa-google"></i> 구글 캘린더</div>` +
+      gcalEvts.map(e=>`<div class="todo-item" style="border-left:3px solid #4285f4;padding-left:8px">
+        <div style="flex:1"><div style="font-size:13px;font-weight:500">${e.title}</div>
+        <div style="font-size:11px;color:var(--text-muted)">${e.time||'종일'}</div></div>
+      </div>`).join('') + `</div>`;
+  }
+  if(!todos.length && !gcalEvts.length) { el.innerHTML = `<div class="empty-state"><i class="fa-solid fa-check-circle"></i><p>이 날 할 일이 없습니다</p></div>`; return; }
+  html += sortedTodos(todos).map(t => {
     const role = t.due===d && t.start===d ? '시작·마감' : t.due===d ? '마감' : '시작';
     return `<div class="todo-item" style="cursor:pointer" onclick="showCalDetailTodo('${t.id}')">
       <div class="priority-dot priority-${t.priority}"></div>
@@ -3475,6 +3678,7 @@ function renderCalDayTodos() {
       <button class="todo-action" onclick="event.stopPropagation();openTodoModal('${t.id}')"><i class="fa-solid fa-pen"></i></button>
     </div>`;
   }).join('');
+  el.innerHTML = html;
   const mk = monthKeyForDateStr(d);
   const wk = weekKeyForDateStr(d);
   const mBig = (state.monthlyBigGoals || {})[mk] || '';
@@ -3535,28 +3739,9 @@ function editCalBigGoal(type) {
 function changeMonth(dir) { state.calMonth += dir; if(state.calMonth<0){state.calMonth=11;state.calYear--;} if(state.calMonth>11){state.calMonth=0;state.calYear++;} renderCalendar(); }
 function goToToday() { state.calYear=new Date().getFullYear(); state.calMonth=new Date().getMonth(); state.calSelectedDate=todayStr(); renderCalendar(); }
 
-// ========== WEEKLY ==========
-function renderWeekly() {
-  const days = ['일','월','화','수','목','금','토'];
-  const now = new Date(); now.setHours(0,0,0,0);
-  const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay() + state.weekOffset*7);
-  const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate()+6);
-  document.getElementById('week-label').textContent = `${fmtFull(startOfWeek.toISOString().split('T')[0])} ~ ${fmtFull(endOfWeek.toISOString().split('T')[0])}`;
-  let html = '';
-  for(let i=0;i<7;i++) {
-    const d = new Date(startOfWeek); d.setDate(startOfWeek.getDate()+i);
-    const dStr = d.toISOString().split('T')[0];
-    const isToday = dStr===todayStr();
-    const dayTodos = state.todos.filter(t=>t.due===dStr);
-    html += `<div class="week-col ${isToday?'today-col':''}">
-      <div class="week-col-header">${days[d.getDay()]}</div>
-      <div class="week-col-date">${d.getDate()}</div>
-      ${dayTodos.map(t=>`<div class="week-todo" onclick="openTodoModal('${t.id}')" title="${t.title}">${t.title}</div>`).join('')}
-    </div>`;
-  }
-  document.getElementById('week-grid').innerHTML = html;
-}
-function changeWeek(dir) { state.weekOffset += dir; renderWeekly(); }
+// ========== WEEKLY (redirected to calendar week mode) ==========
+function renderWeekly() { state.calViewMode = 'week'; renderCalendar(); }
+function changeWeek(dir) { state.weekOffset += dir; renderCalendar(); }
 
 // ========== GOALS ==========
 function renderGoals() {
@@ -4068,106 +4253,7 @@ function deleteNoteById(id) {
   save(); renderNotes(); showToast('메모가 삭제되었습니다','info');
 }
 
-// ========== ICAL & MANUAL TOKEN IMPORT ==========
-function handleIcalDragOver(e) {
-  e.preventDefault();
-  e.currentTarget.classList.add('drag-over');
-}
-function handleIcalDragLeave(e) {
-  e.currentTarget.classList.remove('drag-over');
-}
-function handleIcalDrop(e) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if(file) importIcalFile(file);
-}
-function handleIcalFileSelect(e) {
-  const file = e.target.files[0];
-  if(file) importIcalFile(file);
-  e.target.value = '';
-}
-function importIcalFile(file) {
-  if(!file.name.endsWith('.ics')) {
-    showToast('올바른 .ics 파일을 업로드해주세요', 'error');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const text = e.target.result;
-    const events = parseICS(text);
-    if(!events.length) {
-      showToast('가져올 수 있는 일정이 없습니다', 'error');
-      return;
-    }
-    let count = 0;
-    events.forEach(ev => {
-      const exists = state.todos.some(t => t.title === ev.title && t.due === ev.date);
-      if(!exists) {
-        const t = {
-          id: genId(), title: ev.title || '(제목 없음)', desc: ev.desc || '', priority: 'medium',
-          list: state.lists[0] || '개인', due: ev.date || todayStr(), repeat: 'none',
-          pinned: false, done: false, tags: ['구글캘린더'], subtasks: [], created: new Date().toISOString()
-        };
-        state.todos.push(t);
-        count++;
-      }
-    });
-    save();
-    updateBadges();
-    renderView(state.currentView);
-    showToast(`구글 캘린더에서 ${count}개의 일정을 가져왔습니다 🎉`, 'success');
-  };
-  reader.readAsText(file);
-}
-function parseICS(text) {
-  const events = [];
-  const lines = text.split(/\r?\n/);
-  let currentEvent = null;
-  let inEvent = false;
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-    while (i + 1 < lines.length && (lines[i+1].startsWith(' ') || lines[i+1].startsWith('\t'))) {
-      line += lines[i+1].substring(1);
-      i++;
-    }
-    const trimmed = line.trim();
-    if(trimmed === 'BEGIN:VEVENT') {
-      currentEvent = {};
-      inEvent = true;
-    } else if(trimmed === 'END:VEVENT') {
-      if(currentEvent && currentEvent.title) {
-        events.push(currentEvent);
-      }
-      currentEvent = null;
-      inEvent = false;
-    } else if(inEvent && currentEvent) {
-      const match = line.match(/^([^;:]+)(;[^:]+)?:(.*)$/);
-      if(match) {
-        const key = match[1].toUpperCase();
-        let value = match[3];
-        value = value.replace(/\\(.)/g, "$1").replace(/\\n/gi, "\n");
-        if(key === 'SUMMARY') {
-          currentEvent.title = value;
-        } else if(key === 'DESCRIPTION') {
-          currentEvent.desc = value;
-        } else if(key === 'DTSTART') {
-          let dateStr = value;
-          if(dateStr.length >= 8) {
-            const y = dateStr.substring(0, 4);
-            const m = dateStr.substring(4, 6);
-            const d = dateStr.substring(6, 8);
-            currentEvent.date = `${y}-${m}-${d}`;
-            if(dateStr.includes('T') && dateStr.length >= 13) {
-              currentEvent.time = `${dateStr.substring(9, 11)}:${dateStr.substring(11, 13)}`;
-            }
-          }
-        }
-      }
-    }
-  }
-  return events;
-}
+// ========== MANUAL TOKEN IMPORT ==========
 async function connectGcalWithManualToken() {
   const tokenInput = document.getElementById('gcal-manual-token');
   const token = tokenInput?.value?.trim();
@@ -4222,6 +4308,8 @@ function renderGcal() {
   if(setupEl) setupEl.style.display = getGoogleClientId() ? 'none' : (setupEl.style.display === 'block' ? 'block' : 'none');
   const inlineInput = document.getElementById('gcal-inline-client-id');
   if(inlineInput && state.googleClientId) inlineInput.value = state.googleClientId;
+  const manualSec = document.getElementById('gcal-manual-token-section');
+  if(manualSec) manualSec.style.display = state.gcal.connected ? 'none' : 'block';
 
   if(state.gcal.connected) {
     document.getElementById('gcal-connect-section').style.display='none';
@@ -4229,13 +4317,10 @@ function renderGcal() {
     document.getElementById('gcal-account').textContent = state.gcal.account || 'Google 계정';
     const cals = state.gcal.calendars || [];
     document.getElementById('gcal-calendars').innerHTML = cals.length ? cals.map(c=>`
-      <div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:10px">
-        <div style="width:12px;height:12px;border-radius:50%;background:${c.backgroundColor||'#4285f4'};flex-shrink:0"></div>
-        <div style="flex:1;font-size:13px">${c.summary||'캘린더'}</div>
-        <label style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:4px">
-          <input type="checkbox" checked style="accent-color:var(--accent)"> 동기화
-        </label>
-      </div>`).join('') : `<div class="card" style="font-size:13px;color:var(--text-secondary)">캘린더 목록을 불러오는 중...</div>`;
+      <div style="display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--bg-tertiary);border-radius:var(--radius-xs);font-size:12px;overflow:hidden">
+        <div style="width:10px;height:10px;border-radius:50%;background:${c.backgroundColor||'#4285f4'};flex-shrink:0"></div>
+        <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.summary||'캘린더'}</span>
+      </div>`).join('') : `<div style="font-size:12px;color:var(--text-secondary);padding:8px 0">캘린더 목록을 불러오는 중...</div>`;
     const today = todayStr();
     const events = (state.gcal.events||[]);
     const eventsEl = document.getElementById('gcal-upcoming-events');
@@ -4633,15 +4718,42 @@ function requestNotificationPermission() {
   if('Notification' in window) {
     Notification.requestPermission().then(p=>{
       showToast(p==='granted'?'알림이 허용되었습니다 🔔':'알림 권한이 ' +(p==='denied'?'차단되었습니다':'설정되지 않았습니다'), p==='granted'?'success':'error');
+      if(p==='granted') state.notifEnabled = true;
+      save();
+      updateBellIcon();
       if(state.currentView==='settings') renderSettings();
     });
   }
+}
+function toggleNotifications() {
+  if(!('Notification' in window)) { showToast('이 브라우저는 알림을 지원하지 않습니다', 'error'); return; }
+  if(Notification.permission === 'denied') { showToast('브라우저 설정에서 알림 허용이 필요합니다 🚫', 'error'); return; }
+  if(Notification.permission === 'default') {
+    Notification.requestPermission().then(p=>{
+      if(p==='granted') { state.notifEnabled = true; save(); showToast('알림이 켜졌습니다 🔔', 'success'); }
+      else showToast('알림 권한이 거부되었습니다', 'error');
+      updateBellIcon();
+      if(state.currentView==='settings') renderSettings();
+    });
+    return;
+  }
+  state.notifEnabled = !state.notifEnabled;
+  save();
+  updateBellIcon();
+  showToast(state.notifEnabled ? '알림이 켜졌습니다 🔔' : '알림이 꺼졌습니다 🔕', 'info');
+}
+function updateBellIcon() {
+  const btn = document.getElementById('notif-bell-btn');
+  if(!btn) return;
+  const on = Notification.permission === 'granted' && state.notifEnabled !== false;
+  btn.innerHTML = on ? '<i class="fa-solid fa-bell"></i>' : '<i class="fa-solid fa-bell-slash"></i>';
+  btn.title = on ? '알림 끄기' : '알림 켜기';
 }
 function sendNotification(title, body) {
   if(Notification.permission==='granted') { new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>'}); }
 }
 function checkDueNotifications() {
-  if(Notification.permission!=='granted') return;
+  if(Notification.permission!=='granted' || state.notifEnabled===false) return;
   const now = new Date(); const before = (state.notifBefore||30)*60*1000;
   state.todos.filter(t=>!t.done&&t.due).forEach(t=>{
     const dueDate = new Date(t.due+'T23:59:59');
@@ -4799,7 +4911,10 @@ async function syncPull() {
     state.pomo = { mode:'work', running:false, time:25*60, total:25*60, sessions:0, interval:null, work:25, break:5, long:15 };
     state.syncInterval = null;
     save(); renderView(state.currentView);
+    if(state.theme) applyTheme(state.theme);
+    if(state.accentColor) setAccentColor(state.accentColor);
     updateFabVisibility(); renderStopwatch(); initSidebarSort(); applySidebarModes();
+    updateBellIcon();
     syncUpdateUI();
     syncSetStatus('✓ 데이터를 불러왔습니다 (' + new Date().toLocaleTimeString('ko-KR') + ')', 'var(--success)');
   } catch(e) {
@@ -4820,7 +4935,10 @@ async function syncConnectCode() {
     state.pomo = { mode:'work', running:false, time:25*60, total:25*60, sessions:0, interval:null, work:25, break:5, long:15 };
     state.syncInterval = null;
     save(); renderView(state.currentView);
+    if(state.theme) applyTheme(state.theme);
+    if(state.accentColor) setAccentColor(state.accentColor);
     updateFabVisibility(); renderStopwatch(); initSidebarSort(); applySidebarModes();
+    updateBellIcon();
     syncUpdateUI();
     if(document.getElementById('sync-code-input')) document.getElementById('sync-code-input').value = '';
     syncSetStatus('✓ 연결됨! 코드: ' + code, 'var(--success)');
@@ -4870,6 +4988,7 @@ function init() {
   initAttachDropzoneClick();
   applyToastPosition();
   updateBadges(); checkMobile();
+  updateBellIcon();
   setPomoTime();
   renderDashboard();
   updateTodoListPanel(state.currentView);
