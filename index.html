@@ -1646,7 +1646,7 @@ body.side-panel-open #main { margin-right: 440px; }
             </div>
             <div class="section-title" style="margin-bottom:12px">[우선순위 이름 설정]</div>
             <div class="card" style="margin-bottom:16px">
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
                 <div><label class="form-label" style="color:var(--danger)">최상</label><input class="form-input" id="priority-label-urgent" oninput="savePriorityLabels()" style="padding:6px 8px"></div>
                 <div><label class="form-label" style="color:var(--warning)">높음</label><input class="form-input" id="priority-label-high" oninput="savePriorityLabels()" style="padding:6px 8px"></div>
                 <div><label class="form-label" style="color:var(--info)">중간</label><input class="form-input" id="priority-label-medium" oninput="savePriorityLabels()" style="padding:6px 8px"></div>
@@ -1657,11 +1657,12 @@ body.side-panel-open #main { margin-right: 440px; }
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
               <div>
                 <div class="section-title" style="margin-bottom:12px">표시 옵션</div>
-                <div class="card" style="height:100%">
-                  <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px">
-                    <input type="checkbox" id="hide-completed-checkbox" onchange="setHideCompleted(this.checked)" style="accent-color:var(--accent)">
-                    <span>완료한 할 일 숨기기</span>
-                  </label>
+                <div class="card" style="height:100%;padding:8px">
+                  <input type="checkbox" id="hide-completed-checkbox" onchange="setHideCompleted(this.checked)" style="display:none">
+                  <button id="hide-completed-btn" onclick="(function(){var cb=document.getElementById('hide-completed-checkbox');cb.checked=!cb.checked;setHideCompleted(cb.checked);})()" style="width:100%;padding:9px 10px;border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);font-size:14px;display:flex;align-items:center;gap:10px;transition:all var(--transition);border:none;cursor:pointer;text-align:left">
+                    <i class="fa-solid fa-eye-slash" style="width:18px;text-align:center;flex-shrink:0;font-size:15px"></i>
+                    <span style="flex:1">완료한 할 일 숨기기</span>
+                  </button>
                 </div>
               </div>
               <div>
@@ -2605,7 +2606,16 @@ function applyMenuOrder() {
   });
   labels.forEach(l => list.appendChild(l));
 }
-function setHideCompleted(v) { state.hideCompleted = !!v; save(); renderView(state.currentView); }
+function setHideCompleted(v) {
+  state.hideCompleted = !!v; save(); renderView(state.currentView);
+  const btn = document.getElementById('hide-completed-btn');
+  const cb = document.getElementById('hide-completed-checkbox');
+  if(cb) cb.checked = !!v;
+  if(btn) {
+    if(v) { btn.style.background='var(--accent-dim)'; btn.style.color='var(--accent-light)'; }
+    else { btn.style.background='transparent'; btn.style.color='var(--text-secondary)'; }
+  }
+}
 function filterHideCompleted(todos) {
   if(state.hideCompleted) return todos.filter(t => !t.done);
   return todos;
@@ -5238,6 +5248,11 @@ function renderSettings() {
   if(toastSel) toastSel.value = state.toastPosition || 'top-right';
   const hideCb = document.getElementById('hide-completed-checkbox');
   if(hideCb) hideCb.checked = !!state.hideCompleted;
+  const hideBtn = document.getElementById('hide-completed-btn');
+  if(hideBtn) {
+    if(state.hideCompleted) { hideBtn.style.background='var(--accent-dim)'; hideBtn.style.color='var(--accent-light)'; }
+    else { hideBtn.style.background='transparent'; hideBtn.style.color='var(--text-secondary)'; }
+  }
   applyToastPosition();
   renderGcal();
   // Sync header image settings
