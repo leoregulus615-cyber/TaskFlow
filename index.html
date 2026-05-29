@@ -8,8 +8,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="TaskFlow">
 <meta name="application-name" content="TaskFlow">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236c63ff'/><text y='.9em' x='50%' text-anchor='middle' font-size='62' font-family='system-ui'>⚡</text></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236c63ff'/><text y='.9em' x='50%' text-anchor='middle' font-size='62' font-family='system-ui'>⚡</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236c63ff'/><text y='75' x='50' text-anchor='middle' font-size='62' font-family='system-ui'>⚡</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236c63ff'/><text y='75' x='50' text-anchor='middle' font-size='62' font-family='system-ui'>⚡</text></svg>">
 <title>TaskFlow — 스마트 일정 관리</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
@@ -176,7 +176,7 @@ a { color: inherit; text-decoration: none; }
 .search-bar:focus-within { border-color: var(--accent); width: 280px; }
 .search-bar input { background: transparent; border: none; color: var(--text-primary); font-size: 13px; width: 100%; }
 .search-bar input::placeholder { color: var(--text-muted); }
-.search-bar i { color: var(--text-muted); font-size: 13px; flex-shrink: 0; display: none; }
+.search-bar i { color: var(--text-muted); font-size: 13px; flex-shrink: 0; }
 
 /* Content area */
 #content { flex: 1; overflow-y: auto; padding: 24px; }
@@ -401,7 +401,7 @@ textarea.form-input { resize: none; min-height: 72px; overflow-y: hidden; }
 }
 .mini-cal-popup.open { display: block; }
 .mini-cal-popup .calendar-grid { margin-top: 6px; gap: 2px; }
-.mini-cal-popup .cal-day { aspect-ratio: 1; font-size: 12px; padding: 2px; }
+.mini-cal-popup .cal-day { aspect-ratio: 1; font-size: 12px; padding: 2px; align-items: center; justify-content: center; }
 .mini-cal-popup .cal-num { font-size: 11px; }
 .mini-cal-clear { font-size: 11px; color: var(--text-muted); cursor: pointer; margin-top: 6px; text-align: center; }
 .mini-cal-clear:hover { color: var(--accent-light); }
@@ -459,7 +459,8 @@ textarea.form-input { resize: none; min-height: 72px; overflow-y: hidden; }
 .pomo-settings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 16px; }
 .pomo-set-item { display: flex; flex-direction: column; align-items: center; }
 .pomo-set-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-align: center; width: 100%; }
-.pomo-set-input { width: 64px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 6px; font-size: 14px; font-weight: 600; color: var(--text-primary); text-align: center; }
+.pomo-set-input { width: 64px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 6px; font-size: 14px; font-weight: 600; color: var(--text-primary); text-align: center; -moz-appearance: textfield; }
+.pomo-set-input::-webkit-inner-spin-button, .pomo-set-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
 /* Eisenhower Matrix */
 .matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -500,9 +501,9 @@ textarea.form-input { resize: none; min-height: 72px; overflow-y: hidden; }
 
 /* Goals */
 .goal-headline-wrap {
-  background: linear-gradient(135deg, var(--accent-dim) 0%, rgba(108,99,255,0.06) 100%);
-  border: 2px solid var(--accent); border-radius: var(--radius);
-  padding: 16px 20px; margin-bottom: 14px; box-shadow: 0 4px 20px rgba(108,99,255,0.18);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-light); border-radius: var(--radius);
+  padding: 14px 16px; margin-bottom: 14px;
 }
 .goal-headline-wrap .goal-headline-label {
   font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
@@ -525,7 +526,7 @@ textarea.form-input { resize: none; min-height: 72px; overflow-y: hidden; }
 }
 .goal-period-label { font-size: 14px; font-weight: 700; flex: 1; min-width: 120px; color: var(--text-primary); }
 .goal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.goal-title { font-size: 15px; font-weight: 700; flex: 1; color: var(--text-primary); line-height: 1.4; }
+.goal-title { font-size: 13px; font-weight: 600; flex: 1; color: var(--text-primary); line-height: 1.4; }
 .goal-percent { font-size: 14px; font-weight: 800; color: var(--accent-light); background: var(--accent-dim); padding: 2px 8px; border-radius: var(--radius-xs); }
 .goal-meta { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
 
@@ -833,8 +834,9 @@ textarea.form-input { resize: none; min-height: 72px; overflow-y: hidden; }
 .menu-vis-item {
   display: flex; align-items: center; gap: 8px; font-size: 13px;
   padding: 8px 10px; border-radius: var(--radius-sm); background: var(--bg-tertiary);
-  cursor: pointer;
+  cursor: pointer; border: 1px solid transparent; transition: all var(--transition);
 }
+.menu-vis-item:has(input:checked) { background: var(--accent-dim); border-color: var(--accent); color: var(--accent-light); }
 .menu-vis-item input { accent-color: var(--accent); }
 .list-inline-create { display: flex; gap: 6px; margin-top: 6px; }
 .list-inline-create input { flex: 1; font-size: 12px; padding: 6px 8px; }
@@ -937,8 +939,8 @@ body.side-panel-open #main { margin-right: 440px; }
 #cal-goals-sidebar.open { display: flex; }
 .cal-view-wrap { flex: 1; display: flex; position: relative; overflow: hidden; }
 .cal-main-area { flex: 1; overflow: auto; }
-#view-calendar { display: flex; flex-direction: column; overflow: hidden; }
-#view-calendar { display: flex; flex-direction: column; height: 100%; }
+#view-calendar { flex-direction: column; overflow: hidden; height: 100%; }
+.view.active#view-calendar { display: flex !important; }
 #view-calendar #cal-content { flex: 1; overflow-y: auto; min-height: 0; }
 #view-calendar .cal-month-grid-wrap, #view-calendar .cal-custom-weeks-wrap, #view-calendar .cal-custom-days-wrap { min-height: 0; }
 
@@ -958,8 +960,8 @@ body.side-panel-open #main { margin-right: 440px; }
 /* Calendar goal sections */
 .cal-goal-section { margin-bottom: 12px; }
 .cal-goal-section-label {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
-  color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0;
+  color: var(--text-secondary); text-transform: none; margin-bottom: 7px;
 }
 .cal-goal-item {
   font-size: 12px; padding: 6px 10px; background: var(--accent-dim);
@@ -1000,6 +1002,61 @@ body.side-panel-open #main { margin-right: 440px; }
   padding: 8px 0 6px; border-bottom: 1px solid var(--border); margin-bottom: 8px;
 }
 .group-section { margin-bottom: 20px; }
+
+/* Priority circle picker */
+.priority-circle-wrap { position: relative; display: inline-flex; align-items: center; }
+.priority-circle-btn {
+  width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent;
+  cursor: pointer; transition: all var(--transition); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.priority-circle-btn:hover { transform: scale(1.15); }
+.priority-circle-btn.active { border-color: white; box-shadow: 0 0 0 2px var(--accent); }
+.prio-picker-popup {
+  display: none; position: absolute; top: calc(100% + 6px); right: 0; z-index: 60;
+  background: var(--bg-card); border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm); padding: 8px 10px;
+  box-shadow: var(--shadow); gap: 8px; flex-direction: row;
+  white-space: nowrap;
+}
+.prio-picker-popup.open { display: flex; }
+.prio-pick-item {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  cursor: pointer; font-size: 10px; color: var(--text-muted);
+}
+.prio-pick-item:hover .prio-pick-dot { transform: scale(1.2); }
+.prio-pick-dot {
+  width: 22px; height: 22px; border-radius: 50%; transition: transform var(--transition);
+}
+.prio-pick-dot.urgent { background: var(--danger); }
+.prio-pick-dot.high { background: var(--warning); }
+.prio-pick-dot.medium { background: var(--success); }
+.prio-pick-dot.low { background: var(--info); }
+
+/* Todo complete popup */
+.complete-popup {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.7);
+  background: var(--bg-card); border: 2px solid var(--success);
+  border-radius: var(--radius); padding: 28px 36px; text-align: center;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4); z-index: 9999;
+  opacity: 0; pointer-events: none; transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+  min-width: 260px;
+}
+.complete-popup.show {
+  opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1);
+}
+.complete-popup-emoji { font-size: 48px; margin-bottom: 10px; line-height: 1; }
+.complete-popup-msg { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.complete-popup-sub { font-size: 12px; color: var(--text-muted); }
+
+#sidebar.mobile-icon-only { width: 60px; overflow: hidden; }
+#sidebar.mobile-icon-only .sidebar-btn span,
+#sidebar.mobile-icon-only .sidebar-section-label-row,
+#sidebar.mobile-icon-only .sidebar-bottom-row span,
+#sidebar.mobile-icon-only .logo-text,
+#sidebar.mobile-icon-only #sidebar-image-wrap { display: none !important; }
+#sidebar.mobile-icon-only .sidebar-btn { justify-content: center; padding: 10px; }
+#sidebar.mobile-icon-only .logo-icon-wrap { justify-content: center; }
 </style>
 </head>
 <body>
@@ -1029,11 +1086,11 @@ body.side-panel-open #main { margin-right: 440px; }
         <button class="sidebar-btn" data-view="goals" data-menu-label="목표" onclick="switchView('goals',this)">
           <i class="fa-solid fa-bullseye"></i><span>목표</span>
         </button>
-        <button class="sidebar-btn" data-view="calendar" data-menu-label="캘린더" onclick="switchView('calendar',this)">
-          <i class="fa-solid fa-calendar"></i><span>캘린더</span>
-        </button>
         <button class="sidebar-btn" data-view="dday" data-menu-label="D-Day" onclick="switchView('dday',this)">
           <i class="fa-solid fa-flag"></i><span>D-Day</span>
+        </button>
+        <button class="sidebar-btn" data-view="calendar" data-menu-label="캘린더" onclick="switchView('calendar',this)">
+          <i class="fa-solid fa-calendar"></i><span>캘린더</span>
         </button>
         <div class="sidebar-section-label-row">도구</div>
         <button class="sidebar-btn" data-view="pomodoro" data-menu-label="뽀모도로" onclick="switchView('pomodoro',this)">
@@ -1072,6 +1129,7 @@ body.side-panel-open #main { margin-right: 440px; }
       <span class="topbar-title" id="topbar-title">대시보드</span>
       <div class="topbar-spacer"></div>
       <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" placeholder="투두 검색..." id="search-input" oninput="handleSearch(this.value)">
       </div>
       <button class="icon-btn" onclick="openTodoModal()" title="새 투두 추가"><i class="fa-solid fa-plus"></i></button>
@@ -1471,56 +1529,63 @@ body.side-panel-open #main { margin-right: 440px; }
             <div class="section-title" style="margin-bottom:12px">테마 색상</div>
             <div class="card" style="margin-bottom:16px">
               <div class="form-label">프리셋 테마</div>
-              <div class="theme-picker" style="margin-bottom:16px">
-                <div class="theme-swatch active" style="background:#1a1a1c;border:2px solid #6c63ff" onclick="applyTheme('dark')" title="다크 (기본)"></div>
-                <div class="theme-swatch" style="background:#f5f5f7;border:2px solid #ccc" onclick="applyTheme('light')" title="라이트"></div>
-                <div class="theme-swatch" style="background:#162018" onclick="applyTheme('nature')" title="네이처"></div>
-                <div class="theme-swatch" style="background:#0e1f3d" onclick="applyTheme('ocean')" title="오션"></div>
-                <div class="theme-swatch" style="background:#2a1020" onclick="applyTheme('rose')" title="로즈"></div>
-                <div class="theme-swatch" style="background:#2a1a0a" onclick="applyTheme('sunset')" title="선셋"></div>
+              <div style="margin-bottom:8px">
+                <div style="font-size:10px;color:var(--text-muted);margin-bottom:5px;letter-spacing:0.08em;text-transform:uppercase">라이트</div>
+                <div class="theme-picker" style="margin-bottom:10px">
+                  <div class="theme-swatch" style="background:#f5f5f7;border:2px solid #ccc" onclick="applyTheme('light')" title="라이트"></div>
+                </div>
+                <div style="font-size:10px;color:var(--text-muted);margin-bottom:5px;letter-spacing:0.08em;text-transform:uppercase">다크</div>
+                <div class="theme-picker">
+                  <div class="theme-swatch active" style="background:#1a1a1c;border:2px solid #6c63ff" onclick="applyTheme('dark')" title="다크 (기본)"></div>
+                  <div class="theme-swatch" style="background:#162018" onclick="applyTheme('nature')" title="네이처"></div>
+                  <div class="theme-swatch" style="background:#0e1f3d" onclick="applyTheme('ocean')" title="오션"></div>
+                  <div class="theme-swatch" style="background:#2a1020" onclick="applyTheme('rose')" title="로즈"></div>
+                  <div class="theme-swatch" style="background:#2a1a0a" onclick="applyTheme('sunset')" title="선셋"></div>
+                </div>
               </div>
               <div class="form-label">커스텀 액센트 색상</div>
               <div style="display:flex;gap:10px;align-items:center">
-                <input type="color" id="accent-color-picker" value="#6c63ff" onchange="setAccentColor(this.value)" style="width:40px;height:34px;border:none;background:transparent;cursor:pointer;border-radius:4px">
+                <input type="color" id="accent-color-picker" value="#6c63ff" oninput="setAccentColor(this.value)" onchange="setAccentColor(this.value)" style="width:40px;height:34px;border:none;background:transparent;cursor:pointer;border-radius:4px">
                 <input class="form-input" type="text" id="accent-hex" value="#6c63ff" style="width:100px" onchange="setAccentColor(this.value)">
               </div>
             </div>
-            <div class="section-title" style="margin-bottom:12px">헤더 이미지 설정</div>
+            <div class="section-title" style="margin-bottom:12px">이미지 설정</div>
             <div class="card" style="margin-bottom:16px">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-                <span style="font-size:13px">헤더 이미지 표시</span>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="header-img-toggle" onchange="applyHeaderImageToggle(this.checked)">
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-              <div id="header-img-upload-area">
-                <div class="attach-dropzone" onclick="document.getElementById('header-img-input').click()" style="cursor:pointer;padding:10px">
-                  <i class="fa-solid fa-image"></i> 헤더 이미지 선택
-                  <input type="file" id="header-img-input" accept="image/*" style="display:none" onchange="uploadHeaderImage(event)">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                    <span style="font-size:12px;font-weight:600">헤더 이미지</span>
+                    <label class="toggle-switch" style="transform:scale(0.85);transform-origin:right center">
+                      <input type="checkbox" id="header-img-toggle" onchange="applyHeaderImageToggle(this.checked)">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="attach-dropzone" onclick="document.getElementById('header-img-input').click()" style="cursor:pointer;padding:8px;font-size:11px">
+                    <i class="fa-solid fa-image"></i> 이미지 선택
+                    <input type="file" id="header-img-input" accept="image/*" style="display:none" onchange="uploadHeaderImage(event)">
+                  </div>
+                  <div id="header-img-preview" style="margin-top:6px;display:none">
+                    <img id="header-img-preview-img" src="" alt="" style="width:100%;max-height:60px;object-fit:cover;border-radius:var(--radius-sm)">
+                    <button class="btn-secondary" style="margin-top:4px;font-size:10px;padding:3px 8px;width:100%" onclick="removeHeaderImage()"><i class="fa-solid fa-xmark"></i> 제거</button>
+                  </div>
                 </div>
-                <div id="header-img-preview" style="margin-top:8px;display:none">
-                  <img id="header-img-preview-img" src="" alt="" style="width:100%;max-height:80px;object-fit:cover;border-radius:var(--radius-sm)">
-                  <button class="btn-secondary" style="margin-top:6px;font-size:11px;padding:4px 10px" onclick="removeHeaderImage()"><i class="fa-solid fa-xmark"></i> 이미지 제거</button>
+                <div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                    <span style="font-size:12px;font-weight:600">사이드바 이미지</span>
+                    <label class="toggle-switch" style="transform:scale(0.85);transform-origin:right center">
+                      <input type="checkbox" id="sidebar-img-toggle" onchange="applySidebarImageToggle(this.checked)">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div class="attach-dropzone" onclick="document.getElementById('sidebar-img-input').click()" style="cursor:pointer;padding:8px;font-size:11px">
+                    <i class="fa-solid fa-image"></i> 이미지 선택
+                    <input type="file" id="sidebar-img-input" accept="image/*" style="display:none" onchange="uploadSidebarImage(event)">
+                  </div>
+                  <div id="sidebar-img-preview" style="margin-top:6px;display:none">
+                    <img id="sidebar-img-preview-img" src="" alt="" style="width:100%;max-height:60px;object-fit:cover;border-radius:var(--radius-sm)">
+                    <button class="btn-secondary" style="margin-top:4px;font-size:10px;padding:3px 8px;width:100%" onclick="removeSidebarImage()"><i class="fa-solid fa-xmark"></i> 제거</button>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="section-title" style="margin-bottom:12px">사이드바 이미지 설정</div>
-            <div class="card" style="margin-bottom:16px">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-                <span style="font-size:13px">사이드바 이미지 표시</span>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="sidebar-img-toggle" onchange="applySidebarImageToggle(this.checked)">
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-              <div class="attach-dropzone" onclick="document.getElementById('sidebar-img-input').click()" style="cursor:pointer;padding:10px">
-                <i class="fa-solid fa-image"></i> 사이드바 이미지 선택
-                <input type="file" id="sidebar-img-input" accept="image/*" style="display:none" onchange="uploadSidebarImage(event)">
-              </div>
-              <div id="sidebar-img-preview" style="margin-top:8px;display:none">
-                <img id="sidebar-img-preview-img" src="" alt="" style="width:100%;max-height:80px;object-fit:cover;border-radius:var(--radius-sm)">
-                <button class="btn-secondary" style="margin-top:6px;font-size:11px;padding:4px 10px" onclick="removeSidebarImage()"><i class="fa-solid fa-xmark"></i> 이미지 제거</button>
               </div>
             </div>
             <div class="section-title" style="margin-bottom:12px">투두 리스트 관리</div>
@@ -1536,15 +1601,38 @@ body.side-panel-open #main { margin-right: 440px; }
               <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">표시할 메뉴를 선택하세요. 순서는 사이드바에서 드래그로 변경할 수 있습니다.</p>
               <div class="menu-visibility-grid" id="menu-visibility-grid"></div>
             </div>
-            <div class="section-title" style="margin-bottom:12px">우선순위 이름</div>
+            <div class="section-title" style="margin-bottom:12px">투두 완료 팝업</div>
             <div class="card" style="margin-bottom:16px">
-              <div class="form-row" style="grid-template-columns:1fr 1fr;gap:10px">
-                <div class="form-group"><label class="form-label">긴급</label><input class="form-input" id="priority-label-urgent" oninput="savePriorityLabels()"></div>
-                <div class="form-group"><label class="form-label">높음</label><input class="form-input" id="priority-label-high" oninput="savePriorityLabels()"></div>
-                <div class="form-group"><label class="form-label">위임</label><input class="form-input" id="priority-label-medium" oninput="savePriorityLabels()"></div>
-                <div class="form-group"><label class="form-label">낮음</label><input class="form-input" id="priority-label-low" oninput="savePriorityLabels()"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <span style="font-size:13px">완료 시 팝업 표시</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="complete-popup-toggle" onchange="state.completePopupEnabled=this.checked;save()">
+                  <span class="toggle-slider"></span>
+                </label>
               </div>
-              <button class="btn-secondary" style="margin-top:8px" onclick="resetPriorityLabels()"><i class="fa-solid fa-rotate-left"></i> 기본 이름으로 복원</button>
+              <div class="form-group" style="margin-bottom:8px">
+                <label class="form-label">이모지</label>
+                <input class="form-input" type="text" id="complete-popup-emoji-input" placeholder="✅" style="width:80px;text-align:center;font-size:20px" oninput="state.completePopupEmoji=this.value;save()">
+              </div>
+              <div class="form-group" style="margin-bottom:8px">
+                <label class="form-label">메시지</label>
+                <input class="form-input" type="text" id="complete-popup-msg-input" placeholder="완료!" oninput="state.completePopupMsg=this.value;save()">
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <label class="form-label">서브 메시지</label>
+                <input class="form-input" type="text" id="complete-popup-sub-input" placeholder="잘 하셨어요" oninput="state.completePopupSub=this.value;save()">
+              </div>
+              <button class="btn-secondary" style="margin-top:8px;font-size:12px;padding:5px 10px" onclick="showCompletionPopupTest()"><i class="fa-solid fa-eye"></i> 미리보기</button>
+            </div>
+            <div class="section-title" style="margin-bottom:12px">[우선순위 이름 설정]</div>
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+                <div><label class="form-label" style="color:var(--danger)">최상</label><input class="form-input" id="priority-label-urgent" oninput="savePriorityLabels()" style="padding:6px 8px"></div>
+                <div><label class="form-label" style="color:var(--warning)">높음</label><input class="form-input" id="priority-label-high" oninput="savePriorityLabels()" style="padding:6px 8px"></div>
+                <div><label class="form-label" style="color:var(--info)">중간</label><input class="form-input" id="priority-label-medium" oninput="savePriorityLabels()" style="padding:6px 8px"></div>
+                <div><label class="form-label">낮음</label><input class="form-input" id="priority-label-low" oninput="savePriorityLabels()" style="padding:6px 8px"></div>
+              </div>
+              <button class="btn-secondary" style="margin-top:8px;font-size:12px;padding:5px 10px" onclick="resetPriorityLabels()"><i class="fa-solid fa-rotate-left"></i> 기본값 복원</button>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
               <div>
@@ -1597,48 +1685,50 @@ body.side-panel-open #main { margin-right: 440px; }
                   <span style="font-size:12px;color:var(--text-muted)" id="notif-status">미설정</span>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="form-label">마감 전 알림 시간</label>
-                <select class="form-select" id="notif-before">
-                  <option value="10">10분 전</option>
-                  <option value="30" selected>30분 전</option>
-                  <option value="60">1시간 전</option>
-                  <option value="1440">하루 전</option>
-                </select>
-              </div>
+
             </div>
             
             <div class="section-title" style="margin-bottom:12px">사운드 설정</div>
-            <div class="card" style="margin-bottom:16px">
-              <div class="volume-row">
-                <label style="min-width:110px;font-size:13px">효과음 볼륨</label>
-                <input type="range" min="0" max="100" value="70" id="sfx-volume-slider" oninput="updateVolumes()">
-                <span id="sfx-volume-label">70%</span>
-              </div>
-
-              <div class="volume-row">
-                <label style="min-width:110px;font-size:13px">알람 볼륨</label>
-                <input type="range" min="0" max="100" value="80" id="alarm-volume-slider" oninput="updateVolumes()">
-                <span id="alarm-volume-label">80%</span>
-              </div>
+            <div style="display:none">
+              <input type="range" id="sfx-volume-slider" value="70" oninput="updateVolumes()">
+              <span id="sfx-volume-label">70%</span>
+              <input type="range" id="alarm-volume-slider" value="80" oninput="updateVolumes()">
+              <span id="alarm-volume-label">80%</span>
             </div>
 
 
             <div class="card" style="margin-bottom:16px">
-              <div class="form-group">
-                <label class="form-label">효과음 파일</label>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                  <input type="file" class="form-input" accept="audio/*" onchange="uploadSound(event,'sfx')">
-                  <button class="btn-secondary" onclick="resetSound('sfx')">기본 효과음 복원</button>
+              <div class="form-group" style="margin-bottom:10px">
+                <label class="form-label">효과음 볼륨</label>
+                <div class="volume-row" style="margin-top:0">
+                  <input type="range" min="0" max="100" value="70" id="sfx-volume-slider2" oninput="document.getElementById('sfx-volume-slider').value=this.value;updateVolumes()">
+                  <span id="sfx-vol-label2">70%</span>
                 </div>
               </div>
-
-              <div class="form-group">
-                <label class="form-label">알람음 파일</label>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                  <input type="file" class="form-input" accept="audio/*" onchange="uploadSound(event,'alarm')">
-                  <button class="btn-secondary" onclick="resetSound('alarm')">기본 알람음 복원</button>
+              <div class="form-group" style="margin-bottom:0">
+                <div style="display:flex;gap:8px;align-items:center">
+                  <button class="btn-secondary" style="font-size:12px;padding:6px 12px;display:flex;align-items:center;gap:6px" onclick="document.getElementById('sfx-file-input').click()"><i class="fa-solid fa-upload"></i> 효과음 파일 선택</button>
+                  <button class="btn-secondary" style="font-size:12px;padding:6px 12px" onclick="resetSound('sfx')"><i class="fa-solid fa-rotate-left"></i> 기본 복원</button>
+                  <span id="sfx-file-name" style="font-size:11px;color:var(--text-muted)"></span>
                 </div>
+                <input type="file" id="sfx-file-input" accept="audio/*" style="display:none" onchange="uploadSound(event,'sfx');document.getElementById('sfx-file-name').textContent=this.files[0]?.name||''">
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:16px">
+              <div class="form-group" style="margin-bottom:10px">
+                <label class="form-label">알람음 볼륨</label>
+                <div class="volume-row" style="margin-top:0">
+                  <input type="range" min="0" max="100" value="80" id="alarm-volume-slider2" oninput="document.getElementById('alarm-volume-slider').value=this.value;updateVolumes()">
+                  <span id="alarm-vol-label2">80%</span>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <div style="display:flex;gap:8px;align-items:center">
+                  <button class="btn-secondary" style="font-size:12px;padding:6px 12px;display:flex;align-items:center;gap:6px" onclick="document.getElementById('alarm-file-input').click()"><i class="fa-solid fa-upload"></i> 알람음 파일 선택</button>
+                  <button class="btn-secondary" style="font-size:12px;padding:6px 12px" onclick="resetSound('alarm')"><i class="fa-solid fa-rotate-left"></i> 기본 복원</button>
+                  <span id="alarm-file-name" style="font-size:11px;color:var(--text-muted)"></span>
+                </div>
+                <input type="file" id="alarm-file-input" accept="audio/*" style="display:none" onchange="uploadSound(event,'alarm');document.getElementById('alarm-file-name').textContent=this.files[0]?.name||''">
               </div>
             </div>
 
@@ -1713,7 +1803,7 @@ body.side-panel-open #main { margin-right: 440px; }
                 <input class="form-input" type="text" id="sync-code-input" placeholder="다른 기기의 코드 입력..." style="font-family:monospace;font-size:13px;flex:1">
                 <button class="btn-primary" onclick="syncConnectCode()" style="white-space:nowrap">연결</button>
               </div>
-              <div id="sync-status" style="font-size:11px;color:var(--text-muted);margin-top:8px"></div>
+              <div id="sync-status" style="margin-top:8px;min-height:20px"></div>
             </div>
             <div class="section-title" style="margin-bottom:12px">데이터</div>
             <div class="card">
@@ -1832,34 +1922,39 @@ body.side-panel-open #main { margin-right: 440px; }
       <div class="form-group">
         <label class="form-label">제목 *</label>
         <div style="display:flex;align-items:center;gap:8px">
-          <button id="todo-pin-btn" type="button" onclick="togglePinBtn()" title="상단 고정" style="flex-shrink:0;width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-tertiary);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition)">
-            <i class="fa-solid fa-thumbtack" style="font-size:13px"></i>
-          </button>
+          <div style="position:relative">
+            <button id="todo-pin-btn" type="button" onclick="togglePinBtn()" style="flex-shrink:0;width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-tertiary);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition)" title="">
+              <i class="fa-solid fa-thumbtack" style="font-size:13px"></i>
+            </button>
+            <div id="pin-tooltip" style="display:none;position:absolute;bottom:calc(100%+6px);left:50%;transform:translateX(-50%);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xs);padding:4px 8px;font-size:11px;color:var(--text-secondary);white-space:nowrap;pointer-events:none;z-index:10">상단 고정</div>
+          </div>
           <input class="form-input" type="text" id="todo-title-input" placeholder="할 일을 입력하세요..." style="flex:1;font-size:18px;font-weight:700;padding:12px 14px;letter-spacing:-0.02em">
+          <div class="priority-circle-wrap">
+            <div id="prio-circle-display" class="priority-circle-btn" style="background:var(--info)" onclick="togglePrioPickerPopup(event)" title="우선순위 선택"></div>
+            <div class="prio-picker-popup" id="prio-picker-popup">
+              <div class="prio-pick-item" onclick="setPriorityCircle('urgent')"><div class="prio-pick-dot urgent"></div><span>최상</span></div>
+              <div class="prio-pick-item" onclick="setPriorityCircle('high')"><div class="prio-pick-dot high"></div><span>높음</span></div>
+              <div class="prio-pick-item" onclick="setPriorityCircle('medium')"><div class="prio-pick-dot medium"></div><span>중간</span></div>
+              <div class="prio-pick-item" onclick="setPriorityCircle('low')"><div class="prio-pick-dot low"></div><span>낮음</span></div>
+            </div>
+          </div>
         </div>
       </div>
+      <input type="hidden" id="todo-priority-input" value="medium">
+      <input type="hidden" id="todo-matrix-input" value="q3">
       <div class="form-group">
         <label class="form-label">설명</label>
         <textarea class="form-input" id="todo-desc-input" placeholder="상세 내용 (선택)" oninput="autoGrow(this)" style="min-height:64px"></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">하위 작업</label>
-        <div id="subtasks-container" style="min-height:48px;max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 8px;background:var(--bg-tertiary);margin-bottom:6px"></div>
+        <div id="subtasks-container" style="min-height:40px;max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 8px;background:var(--bg-tertiary);margin-bottom:6px;display:flex;flex-direction:column;gap:5px"></div>
         <div style="display:flex;gap:8px">
           <input class="form-input" type="text" id="subtask-input" placeholder="하위 작업 추가... (Enter)" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addSubtask();}">
           <button class="btn-secondary" onclick="addSubtask()">추가</button>
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">우선순위 (아이젠하워)</label>
-          <select class="form-select" id="todo-priority-input" onchange="syncMatrixFromPrioritySelect()">
-            <option value="urgent">🔴 긴급 — 지금 바로 실행</option>
-            <option value="high">🟠 높음 — 일정 계획</option>
-            <option value="medium" selected>🔵 위임</option>
-            <option value="low">⚪ 낮음 — 제거 검토</option>
-          </select>
-        </div>
         <div class="form-group">
           <label class="form-label">리스트</label>
           <select class="form-select" id="todo-list-input" onchange="handleTodoListSelectChange()"></select>
@@ -1869,31 +1964,32 @@ body.side-panel-open #main { margin-right: 440px; }
             <button type="button" class="btn-secondary" onclick="cancelNewListFromTodo()">취소</button>
           </div>
         </div>
-      </div>
-      <div class="form-row">
         <div class="form-group">
-          <label class="form-label">태그 (Enter로 추가)</label>
-          <div class="tags-container-wrap">
-            <div class="tags-container" id="tags-container" onclick="document.getElementById('tag-input-field').focus()">
-              <input class="tag-input" type="text" id="tag-input-field" placeholder="태그 입력..." onkeydown="handleTagInput(event)" oninput="handleTagSuggestInput()" onfocus="handleTagSuggestInput()" onblur="setTimeout(hideTagSuggest,150)">
-            </div>
-            <div class="tag-suggest-dropdown" id="tag-suggest-dropdown"></div>
+          <label class="form-label">목표에 등록</label>
+          <div id="todo-goal-select-wrap" style="border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-tertiary);max-height:80px;overflow-y:auto;padding:4px 8px;min-height:36px">
+            <div id="todo-goal-checkboxes"></div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">첨부파일</label>
-          <div class="attach-dropzone" id="todo-attach-dropzone"
-            ondragover="handleAttachDragOver(event)" ondragleave="handleAttachDragLeave(event)" ondrop="handleAttachDrop(event)">
-            <i class="fa-solid fa-paperclip"></i> 클릭 또는 드래그
-            <input type="file" id="todo-attach-input" multiple accept="image/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="handleAttachFileSelect(event)">
-          </div>
-          <div id="todo-attachments-preview"></div>
+          <select class="form-select" id="todo-goal-select" multiple style="display:none"></select>
         </div>
       </div>
-      <input type="hidden" id="todo-matrix-input" value="q2">
       <div class="form-group">
-        <label class="form-label">목표에 등록</label>
-        <select class="form-select" id="todo-goal-select" multiple style="min-height:36px;max-height:80px"></select>
+        <label class="form-label">첨부파일</label>
+        <div class="attach-dropzone" id="todo-attach-dropzone"
+          onclick="document.getElementById('todo-attach-input').click()"
+          ondragover="handleAttachDragOver(event)" ondragleave="handleAttachDragLeave(event)" ondrop="handleAttachDrop(event)" style="cursor:pointer">
+          <i class="fa-solid fa-paperclip"></i> 클릭 또는 드래그하여 파일 추가 (여러 개 가능)
+          <input type="file" id="todo-attach-input" multiple accept="image/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="handleAttachFileSelect(event)">
+        </div>
+        <div id="todo-attachments-preview"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">태그</label>
+        <div class="tags-container-wrap">
+          <div class="tags-container" id="tags-container" onclick="document.getElementById('tag-input-field').focus()">
+            <input class="tag-input" type="text" id="tag-input-field" placeholder="태그 입력..." onkeydown="handleTagInput(event)" oninput="handleTagSuggestInput()" onfocus="handleTagSuggestInput()" onblur="setTimeout(hideTagSuggest,150)">
+          </div>
+          <div class="tag-suggest-dropdown" id="tag-suggest-dropdown"></div>
+        </div>
       </div>
     </div>
     <div class="modal-sticky-footer">
@@ -1940,9 +2036,11 @@ body.side-panel-open #main { margin-right: 440px; }
         <label class="form-label">이름</label>
         <input class="form-input" type="text" id="dday-name-input" placeholder="예: 시험일, 결혼기념일...">
       </div>
-      <div class="form-group">
+      <div class="form-group mini-cal-wrap" id="dday-mini-cal-wrap">
         <label class="form-label">날짜</label>
-        <input class="form-input" type="date" id="dday-date-input">
+        <div class="mini-cal-display empty" id="dday-mini-cal-display" onclick="toggleDdayMiniCal(event)">날짜 없음</div>
+        <input type="hidden" id="dday-date-input">
+        <div class="mini-cal-popup" id="dday-mini-cal-popup"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -2062,6 +2160,130 @@ applySidebarModes(); }
     }
   }
 
+  
+
+// ── Todo complete popup ──
+let completePopupTimer = null;
+function showCompletionPopup(todoTitle) {
+  if(!state.completePopupEnabled) return;
+  const popup = document.getElementById('complete-popup');
+  const emojiEl = document.getElementById('complete-popup-emoji');
+  const msgEl = document.getElementById('complete-popup-msg');
+  const subEl = document.getElementById('complete-popup-sub');
+  if(!popup) return;
+  if(emojiEl) emojiEl.textContent = state.completePopupEmoji || '✅';
+  if(msgEl) msgEl.textContent = state.completePopupMsg || '완료!';
+  if(subEl) subEl.textContent = state.completePopupSub || (todoTitle ? `"${todoTitle.slice(0,20)}${todoTitle.length>20?'…':''}"` : '잘 하셨어요');
+  popup.classList.add('show');
+  if(completePopupTimer) clearTimeout(completePopupTimer);
+  completePopupTimer = setTimeout(() => { popup.classList.remove('show'); }, 1600);
+}
+function showCompletionPopupTest() {
+  const prev = state.completePopupEnabled;
+  state.completePopupEnabled = true;
+  showCompletionPopup('테스트 완료');
+  state.completePopupEnabled = prev;
+}
+
+// ── Priority circle picker ──
+const PRIO_COLORS = { urgent:'var(--danger)', high:'var(--warning)', medium:'var(--success)', low:'var(--info)' };
+function updatePrioCircle(p) {
+  const c = document.getElementById('prio-circle-display');
+  if(c) c.style.background = PRIO_COLORS[p] || 'var(--info)';
+  const inp = document.getElementById('todo-priority-input');
+  if(inp) inp.value = p;
+  const m = document.getElementById('todo-matrix-input');
+  if(m) m.value = PRIORITY_TO_MATRIX[p] || 'q3';
+}
+function togglePrioPickerPopup(e) {
+  e.stopPropagation();
+  const popup = document.getElementById('prio-picker-popup');
+  if(popup) popup.classList.toggle('open');
+}
+function setPriorityCircle(p) {
+  updatePrioCircle(p);
+  const popup = document.getElementById('prio-picker-popup');
+  if(popup) popup.classList.remove('open');
+}
+document.addEventListener('click', () => {
+  const popup = document.getElementById('prio-picker-popup');
+  if(popup) popup.classList.remove('open');
+});
+// Pin btn hover tooltip
+document.addEventListener('mouseover', e => {
+  const btn = e.target.closest('#todo-pin-btn');
+  if(btn) { const tt = document.getElementById('pin-tooltip'); if(tt) tt.style.display='block'; }
+});
+document.addEventListener('mouseout', e => {
+  const btn = e.target.closest('#todo-pin-btn');
+  if(btn) { const tt = document.getElementById('pin-tooltip'); if(tt) tt.style.display='none'; }
+});
+// D-Day mini-cal
+let ddayMiniCalMonth = null;
+function toggleDdayMiniCal(e) {
+  e.stopPropagation();
+  const popup = document.getElementById('dday-mini-cal-popup');
+  if(!popup) return;
+  const opening = !popup.classList.contains('open');
+  document.querySelectorAll('.mini-cal-popup').forEach(p => p.classList.remove('open'));
+  if(opening) {
+    const val = document.getElementById('dday-date-input')?.value;
+    if(val) {
+      const d = new Date(val + 'T12:00:00');
+      ddayMiniCalMonth = { y: d.getFullYear(), m: d.getMonth() };
+    } else {
+      ddayMiniCalMonth = { y: new Date().getFullYear(), m: new Date().getMonth() };
+    }
+    renderDdayMiniCal();
+    popup.classList.add('open');
+  }
+}
+function changeDdayMiniCalMonth(dir) {
+  if(!ddayMiniCalMonth) ddayMiniCalMonth = { y: new Date().getFullYear(), m: new Date().getMonth() };
+  ddayMiniCalMonth.m += dir;
+  if(ddayMiniCalMonth.m < 0) { ddayMiniCalMonth.m = 11; ddayMiniCalMonth.y--; }
+  if(ddayMiniCalMonth.m > 11) { ddayMiniCalMonth.m = 0; ddayMiniCalMonth.y++; }
+  renderDdayMiniCal();
+}
+function renderDdayMiniCal() {
+  const popup = document.getElementById('dday-mini-cal-popup');
+  if(!popup || !ddayMiniCalMonth) return;
+  const { y, m } = ddayMiniCalMonth;
+  const selVal = document.getElementById('dday-date-input')?.value || '';
+  const first = new Date(y, m, 1).getDay();
+  const days = new Date(y, m+1, 0).getDate();
+  const dayNames = ['일','월','화','수','목','금','토'];
+  let cells = dayNames.map(d=>`<div class="cal-header">${d}</div>`).join('');
+  for(let i=0;i<first;i++) cells += `<div class="cal-day other-month"></div>`;
+  for(let d=1;d<=days;d++) {
+    const dStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isSel = dStr === selVal;
+    const isToday = dStr === (new Date().toISOString().split('T')[0]);
+    cells += `<div class="cal-day${isSel?' selected':''}${isToday?' today':''}" onclick="selectDdayDate('${dStr}')"><span class="cal-num">${d}</span></div>`;
+  }
+  popup.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <button class="cal-nav-btn" onclick="changeDdayMiniCalMonth(-1);event.stopPropagation()"><i class="fa-solid fa-chevron-left"></i></button>
+      <span style="font-size:13px;font-weight:600">${y}년 ${m+1}월</span>
+      <button class="cal-nav-btn" onclick="changeDdayMiniCalMonth(1);event.stopPropagation()"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div class="calendar-grid" style="margin-top:0">${cells}</div>
+    <div class="mini-cal-clear" onclick="selectDdayDate('')">날짜 지우기</div>`;
+}
+function selectDdayDate(dStr) {
+  const inp = document.getElementById('dday-date-input');
+  const disp = document.getElementById('dday-mini-cal-display');
+  if(inp) inp.value = dStr;
+  if(disp) {
+    if(dStr) { disp.textContent = new Date(dStr+'T12:00:00').toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'}); disp.classList.remove('empty'); }
+    else { disp.textContent = '날짜 없음'; disp.classList.add('empty'); }
+  }
+  const popup = document.getElementById('dday-mini-cal-popup');
+  if(popup) popup.classList.remove('open');
+  if(dStr) renderDdayMiniCal();
+}
+// Open D-Day modal reset mini-cal
+
   // 2. 모달 외부 클릭 시 닫기
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', e => {
@@ -2155,7 +2377,7 @@ function diffDays(a, b) { return Math.round((new Date(a) - new Date(b)) / 864000
 const PRIORITY_ORDER = { urgent:0, high:1, medium:2, low:3 };
 const PRIORITY_TO_MATRIX = { urgent:'q1', high:'q2', medium:'q3', low:'q4' };
 const MATRIX_TO_PRIORITY = { q1:'urgent', q2:'high', q3:'medium', q4:'low' };
-const DEFAULT_PRIORITY_LABELS = { urgent:'긴급', high:'높음', medium:'위임', low:'낮음' };
+const DEFAULT_PRIORITY_LABELS = { urgent:'최상', high:'높음', medium:'중간', low:'낮음' };
 function getPriorityLabel(p) {
   return (state.priorityLabels && state.priorityLabels[p]) || DEFAULT_PRIORITY_LABELS[p] || '위임';
 }
@@ -2865,7 +3087,7 @@ function switchView(v, btn) {
   updateTodoListPanel(v);
   updateFabVisibility();
   renderView(v);
-  if(window.innerWidth <= 768) { const sb = document.getElementById('sidebar'); sb.classList.remove('mobile-open'); document.getElementById('sidebar-overlay').classList.remove('visible'); }
+  if(window.innerWidth <= 768) { const sb = document.getElementById('sidebar'); sb.classList.remove('mobile-open', 'mobile-icon-only'); document.getElementById('sidebar-overlay').classList.remove('visible'); }
 }
 
 function renderView(v) {
@@ -2902,7 +3124,8 @@ function openTodoModal(id) {
   document.getElementById('todo-delete-btn').style.display = 'none';
   document.getElementById('todo-modal-title').textContent = '새 투두 추가';
   populateTodoListSelect(state.lists[0]);
-  refreshPrioritySelectOptions('medium');
+  document.getElementById('todo-priority-input').value = 'medium';
+  updatePrioCircle('medium');
   initAttachDropzoneClick();
   if(id) {
     const t = state.todos.find(x=>x.id===id);
@@ -2911,7 +3134,7 @@ function openTodoModal(id) {
       document.getElementById('todo-edit-id').value = t.id;
       document.getElementById('todo-title-input').value = t.title;
       document.getElementById('todo-desc-input').value = t.desc || '';
-      refreshPrioritySelectOptions(t.priority || 'medium');
+      document.getElementById('todo-priority-input').value = t.priority || 'medium';
       document.getElementById('todo-matrix-input').value = t.matrix || PRIORITY_TO_MATRIX[t.priority] || 'q3';
       populateTodoListSelect(t.list || state.lists[0]);
       document.getElementById('todo-start-input').value = t.start || '';
@@ -2960,15 +3183,29 @@ function handleRepeatChange() {
 }
 function renderTodoGoalCheckboxes(todoId) {
   const sel = document.getElementById('todo-goal-select');
-  if(!sel) return;
+  const wrap = document.getElementById('todo-goal-checkboxes');
+  if(!sel && !wrap) return;
   if(!state.goals.length) {
-    sel.innerHTML = '<option disabled value="">등록된 목표가 없습니다</option>';
+    if(wrap) wrap.innerHTML = '<div style="font-size:12px;color:var(--text-muted);padding:4px 0">등록된 목표가 없습니다</div>';
+    if(sel) sel.innerHTML = '<option disabled value="">등록된 목표가 없습니다</option>';
     return;
   }
-  sel.innerHTML = state.goals.map(g => {
+  const goalsHtml = state.goals.map(g => {
+    const isLinked = todoId && (g.linkedTodos||[]).includes(todoId);
+    return `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 2px;font-size:12px;color:var(--text-secondary)"><input type="checkbox" value="${g.id}" ${isLinked?'checked':''} style="accent-color:var(--accent)" onchange="syncGoalSelectFromCheckboxes()"><span>[${g.type==='weekly'?'주간':'월간'}] ${g.title}</span></label>`;
+  }).join('');
+  if(wrap) wrap.innerHTML = goalsHtml;
+  if(sel) sel.innerHTML = state.goals.map(g => {
     const isLinked = todoId && (g.linkedTodos||[]).includes(todoId);
     return `<option value="${g.id}" ${isLinked?'selected':''}>[${g.type==='weekly'?'주간':'월간'}] ${g.title}</option>`;
   }).join('');
+}
+function syncGoalSelectFromCheckboxes() {
+  const wrap = document.getElementById('todo-goal-checkboxes');
+  const sel = document.getElementById('todo-goal-select');
+  if(!wrap || !sel) return;
+  const checked = [...wrap.querySelectorAll('input[type=checkbox]:checked')].map(i => i.value);
+  [...sel.options].forEach(o => { o.selected = checked.includes(o.value); });
 }
 function setTodoEditMode(mode) {
   state.todoEditMode = mode;
@@ -3076,6 +3313,7 @@ function toggleDone(id) {
       t.doneAt = new Date().toISOString();
       if(!wasDone) {
         playCompleteSound();
+        showCompletionPopup(t.title);
         if(t.repeat && t.repeat !== 'none') {
           const nextDate = calcNextRepeatDate(t);
           if(nextDate) {
@@ -4221,14 +4459,18 @@ function openDdayModal() {
   if(editIdEl) editIdEl.value = '';
   document.getElementById('dday-name-input').value = '';
   document.getElementById('dday-date-input').value = '';
+  const disp = document.getElementById('dday-mini-cal-display');
+  if(disp) { disp.textContent = '날짜 없음'; disp.classList.add('empty'); }
+  const popup = document.getElementById('dday-mini-cal-popup');
+  if(popup) popup.classList.remove('open');
+  ddayMiniCalMonth = null;
   const titleEl = document.querySelector('#dday-modal .modal-title');
   if(titleEl) titleEl.textContent = 'D-Day 추가';
   document.getElementById('dday-modal').classList.add('open');
 }
 function openDdayModalForDate(d) {
   openDdayModal();
-  const inp = document.getElementById('dday-date-input');
-  if(inp && d) inp.value = d;
+  if(d) selectDdayDate(d);
 }
 function closeDdayModal() { document.getElementById('dday-modal').classList.remove('open'); }
 function saveDday() {
@@ -4887,8 +5129,7 @@ function renderSettings() {
   if(gcalInline && state.googleClientId) gcalInline.value = state.googleClientId;
   document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('active'));
   const swatches = document.querySelectorAll('.theme-swatch');
-  const themeIdx = ['dark','light','nature','ocean','rose','sunset'].indexOf(state.theme);
-  if(themeIdx>=0 && swatches[themeIdx]) swatches[themeIdx].classList.add('active');
+  swatches.forEach(s => { if(s.getAttribute('onclick')?.includes(state.theme)) s.classList.add('active'); });
   const acc = document.getElementById('accent-color-picker');
   const hex = document.getElementById('accent-hex');
   if(acc) acc.value = state.accentColor;
@@ -4919,6 +5160,15 @@ function renderSettings() {
   const sbPrevImg = document.getElementById('sidebar-img-preview-img');
   if(sbPrev) sbPrev.style.display = state.sidebarImageData ? '' : 'none';
   if(sbPrevImg && state.sidebarImageData) sbPrevImg.src = state.sidebarImageData;
+  // Complete popup settings
+  const cpToggle = document.getElementById('complete-popup-toggle');
+  if(cpToggle) cpToggle.checked = !!state.completePopupEnabled;
+  const cpEmoji = document.getElementById('complete-popup-emoji-input');
+  if(cpEmoji) cpEmoji.value = state.completePopupEmoji || '';
+  const cpMsg = document.getElementById('complete-popup-msg-input');
+  if(cpMsg) cpMsg.value = state.completePopupMsg || '';
+  const cpSub = document.getElementById('complete-popup-sub-input');
+  if(cpSub) cpSub.value = state.completePopupSub || '';
 }
 function addList() { const v=document.getElementById('new-list-input').value.trim(); if(v&&!state.lists.includes(v)){state.lists.push(v);save();renderSettings();showToast(`'${v}' 리스트 추가됨`,'success');} document.getElementById('new-list-input').value=''; }
 function removeList(l) { if(state.lists.length<=1){showToast('최소 1개의 리스트가 필요합니다','error');return;} state.lists=state.lists.filter(x=>x!==l);save();renderSettings(); }
@@ -4990,7 +5240,15 @@ function toggleSidebar() {
   const isMobile = window.innerWidth <= 768;
 
   if(isMobile) {
-    toggleMobileSidebar();
+    // On mobile: if fully open → icon-only; if icon-only → close
+    if(sidebar.classList.contains('mobile-open') && !sidebar.classList.contains('mobile-icon-only')) {
+      sidebar.classList.add('mobile-icon-only');
+      if(icon) icon.className = 'fa-solid fa-chevron-right';
+    } else {
+      sidebar.classList.remove('mobile-open', 'mobile-icon-only');
+      document.getElementById('sidebar-overlay').classList.remove('visible');
+      if(icon) icon.className = 'fa-solid fa-bars';
+    }
     return;
   }
 
@@ -5016,8 +5274,17 @@ function oldToggleSidebarBackup() {
 function toggleMobileSidebar() {
   const sb = document.getElementById('sidebar');
   const ov = document.getElementById('sidebar-overlay');
-  sb.classList.toggle('mobile-open');
-  ov.classList.toggle('visible');
+  const icon = document.getElementById('sidebar-toggle-icon');
+  if(sb.classList.contains('mobile-open')) {
+    sb.classList.remove('mobile-open', 'mobile-icon-only');
+    ov.classList.remove('visible');
+    if(icon) icon.className = 'fa-solid fa-bars';
+  } else {
+    sb.classList.add('mobile-open');
+    sb.classList.remove('mobile-icon-only');
+    ov.classList.add('visible');
+    if(icon) icon.className = 'fa-solid fa-chevron-left';
+  }
 }
 
 // ========== SEARCH ==========
@@ -5121,6 +5388,7 @@ function refreshPrioritySelectOptions(selected) {
     return `<option value="${p}">${icons[p]} ${getPriorityLabel(p)}${sub}</option>`;
   }).join('');
   if(selected) sel.value = selected;
+  // circle updated via openTodoModal / refreshPrioritySelectOptions callers
 }
 
 // ========== BADGES ==========
@@ -5422,6 +5690,8 @@ function removeSidebarImage() {
   state.sidebarImageData = null; save(); applySidebarImage();
   const prev = document.getElementById('sidebar-img-preview');
   if(prev) prev.style.display = 'none';
+  const inp = document.getElementById('sidebar-img-input');
+  if(inp) inp.value = '';
   showToast('사이드바 이미지가 제거되었습니다', 'info');
 }
 function applySidebarImageToggle(on) {
@@ -5438,6 +5708,11 @@ function applySidebarImage() {
 }
 </script>
 
+<div class="complete-popup" id="complete-popup">
+  <div class="complete-popup-emoji" id="complete-popup-emoji">✅</div>
+  <div class="complete-popup-msg" id="complete-popup-msg">완료!</div>
+  <div class="complete-popup-sub" id="complete-popup-sub">잘 하셨어요</div>
+</div>
 <div class="fab-container" id="global-fabs">
   <button class="fab-btn secondary" onclick="switchView('pomodoro', document.querySelector('[data-view=pomodoro]'))" title="뽀모도로">
     <i class="fa-solid fa-stopwatch"></i>
