@@ -6,6 +6,10 @@
 <meta name="theme-color" content="#0f0f10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TaskFlow">
+<meta name="application-name" content="TaskFlow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236c63ff'/><text y='.9em' x='50%' text-anchor='middle' font-size='62' font-family='system-ui'>⚡</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236c63ff'/><text y='.9em' x='50%' text-anchor='middle' font-size='62' font-family='system-ui'>⚡</text></svg>">
 <title>TaskFlow — 스마트 일정 관리</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
@@ -35,7 +39,7 @@
   --radius: 12px;
   --radius-sm: 8px;
   --radius-xs: 6px;
-  --sidebar-w: 220px;
+  --sidebar-w: 190px;
   --font: 'Pretendard', -apple-system, sans-serif;
   --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
   --tag-1: #6c63ff; --tag-2: #22c55e; --tag-3: #f59e0b; --tag-4: #ef4444;
@@ -105,9 +109,10 @@ a { color: inherit; text-decoration: none; }
   transition: width var(--transition), transform var(--transition);
   overflow: hidden; z-index: 100;
 }
-#sidebar.collapsed { width: 60px; }
+#sidebar.collapsed { width: 54px; }
 #sidebar.mobile-open { transform: translateX(0) !important; }
 #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.main-inner { flex: 1; display: flex; flex-direction: row; overflow: hidden; min-height: 0; }
 
 /* Sidebar */
 .sidebar-header {
@@ -171,7 +176,7 @@ a { color: inherit; text-decoration: none; }
 .search-bar:focus-within { border-color: var(--accent); width: 280px; }
 .search-bar input { background: transparent; border: none; color: var(--text-primary); font-size: 13px; width: 100%; }
 .search-bar input::placeholder { color: var(--text-muted); }
-.search-bar i { color: var(--text-muted); font-size: 13px; flex-shrink: 0; }
+.search-bar i { color: var(--text-muted); font-size: 13px; flex-shrink: 0; display: none; }
 
 /* Content area */
 #content { flex: 1; overflow-y: auto; padding: 24px; }
@@ -320,7 +325,7 @@ a { color: inherit; text-decoration: none; }
 }
 .form-input:focus { border-color: var(--accent); }
 .form-input::placeholder { color: var(--text-muted); }
-textarea.form-input { resize: vertical; min-height: 72px; }
+textarea.form-input { resize: none; min-height: 72px; overflow-y: hidden; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-select {
   width: 100%; background: var(--bg-tertiary); border: 1px solid var(--border);
@@ -452,9 +457,9 @@ textarea.form-input { resize: vertical; min-height: 72px; }
 .pomo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); transition: background var(--transition); }
 .pomo-dot.done { background: var(--accent); }
 .pomo-settings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 16px; }
-.pomo-set-item { text-align: center; }
-.pomo-set-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
-.pomo-set-input { width: 100%; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 6px; font-size: 14px; font-weight: 600; color: var(--text-primary); text-align: center; }
+.pomo-set-item { display: flex; flex-direction: column; align-items: center; }
+.pomo-set-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-align: center; width: 100%; }
+.pomo-set-input { width: 64px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 6px; font-size: 14px; font-weight: 600; color: var(--text-primary); text-align: center; }
 
 /* Eisenhower Matrix */
 .matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -497,28 +502,31 @@ textarea.form-input { resize: vertical; min-height: 72px; }
 .goal-headline-wrap {
   background: linear-gradient(135deg, var(--accent-dim) 0%, rgba(108,99,255,0.06) 100%);
   border: 2px solid var(--accent); border-radius: var(--radius);
-  padding: 14px 16px; margin-bottom: 14px; box-shadow: 0 4px 16px rgba(108,99,255,0.12);
+  padding: 16px 20px; margin-bottom: 14px; box-shadow: 0 4px 20px rgba(108,99,255,0.18);
 }
 .goal-headline-wrap .goal-headline-label {
-  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
-  color: var(--accent-light); text-transform: uppercase; margin-bottom: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--accent-light); text-transform: uppercase; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
 }
 .goal-headline-wrap .goal-headline-input {
-  border-bottom-color: var(--accent) !important; font-size: 18px !important;
+  border-bottom-color: var(--accent) !important; font-size: 20px !important;
+  font-weight: 700 !important;
 }
 .goal-card {
   background: var(--bg-tertiary); border: 1px solid var(--border);
-  border-left: 3px solid var(--border-light);
-  border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 10px;
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm); padding: 16px 18px; margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
 .goal-card .goal-title { font-weight: 500; font-size: 13px; color: var(--text-secondary); }
 .goal-period-nav {
   display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
 }
-.goal-period-label { font-size: 14px; font-weight: 600; flex: 1; min-width: 120px; }
+.goal-period-label { font-size: 14px; font-weight: 700; flex: 1; min-width: 120px; color: var(--text-primary); }
 .goal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.goal-title { font-size: 14px; font-weight: 600; flex: 1; }
-.goal-percent { font-size: 13px; font-weight: 700; color: var(--accent-light); }
+.goal-title { font-size: 15px; font-weight: 700; flex: 1; color: var(--text-primary); line-height: 1.4; }
+.goal-percent { font-size: 14px; font-weight: 800; color: var(--accent-light); background: var(--accent-dim); padding: 2px 8px; border-radius: var(--radius-xs); }
 .goal-meta { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
 
 /* Theme picker */
@@ -727,7 +735,7 @@ textarea.form-input { resize: vertical; min-height: 72px; }
 
 /* Todo list side panel */
 #todo-list-panel {
-  width: 200px; flex-shrink: 0; background: var(--bg-secondary);
+  width: 175px; flex-shrink: 0; background: var(--bg-secondary);
   border-right: 1px solid var(--border); display: none; flex-direction: column;
   overflow: hidden; min-height: 0;
 }
@@ -877,14 +885,75 @@ body.side-panel-open #main { margin-right: 440px; }
 /* Goal headline input */
 .goal-headline-input {
   display: block; width: 100%; box-sizing: border-box;
-  font-size: 17px !important; font-weight: 700 !important;
+  font-size: 20px !important; font-weight: 700 !important;
   background: transparent !important; border: none !important;
-  border-bottom: 2px solid var(--border) !important;
+  border-bottom: 2px solid var(--accent) !important;
   border-radius: 0 !important; padding: 6px 0 !important;
-  margin-bottom: 16px; color: var(--text-primary); outline: none;
+  margin-bottom: 0; color: var(--text-primary); outline: none;
 }
-.goal-headline-input:focus { border-bottom-color: var(--accent) !important; }
-.goal-headline-input::placeholder { color: var(--text-muted); font-weight: 400; font-size: 14px !important; }
+.goal-headline-input:focus { border-bottom-color: var(--accent-light) !important; }
+.goal-headline-input::placeholder { color: rgba(255,255,255,0.3); font-weight: 400; font-size: 15px !important; }
+
+/* Modal sticky footer */
+.modal-sticky-footer {
+  position: sticky; bottom: 0; background: var(--bg-secondary);
+  border-top: 1px solid var(--border); padding: 14px 22px;
+  display: flex; gap: 10px; justify-content: flex-end; z-index: 2;
+}
+
+/* Custom confirm dialog */
+#confirm-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+  z-index: 10000; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity var(--transition);
+  backdrop-filter: blur(4px);
+}
+#confirm-overlay.open { opacity: 1; pointer-events: all; }
+#confirm-box {
+  background: var(--bg-secondary); border: 1px solid var(--border-light);
+  border-radius: var(--radius); padding: 28px 28px 20px; max-width: 380px; width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transform: scale(0.95); transition: transform var(--transition);
+}
+#confirm-overlay.open #confirm-box { transform: scale(1); }
+#confirm-msg { font-size: 14px; line-height: 1.6; margin-bottom: 20px; color: var(--text-primary); }
+#confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* D-Day grid layout */
+.dday-grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; }
+.dday-grid-layout .dday-card { flex-direction: column; text-align: center; margin-bottom: 0; }
+.dday-grid-layout .dday-count { min-width: unset; font-size: 32px; }
+
+/* Calendar right panel */
+.cal-right-panel-toggle {
+  position: absolute; right: 0; top: 0; z-index: 5;
+}
+#cal-goals-sidebar {
+  width: 260px; flex-shrink: 0; background: var(--bg-card);
+  border-left: 1px solid var(--border); overflow-y: auto;
+  padding: 14px; display: none; flex-direction: column; gap: 12px;
+  min-height: 0;
+}
+#cal-goals-sidebar.open { display: flex; }
+.cal-view-wrap { flex: 1; display: flex; position: relative; overflow: hidden; }
+.cal-main-area { flex: 1; overflow: auto; }
+#view-calendar { display: flex; flex-direction: column; overflow: hidden; }
+#view-calendar { display: flex; flex-direction: column; height: 100%; }
+#view-calendar #cal-content { flex: 1; overflow-y: auto; min-height: 0; }
+#view-calendar .cal-month-grid-wrap, #view-calendar .cal-custom-weeks-wrap, #view-calendar .cal-custom-days-wrap { min-height: 0; }
+
+/* Header image */
+#header-banner {
+  width: 100%; height: 120px; object-fit: cover; display: block;
+  background: var(--bg-tertiary);
+}
+#topbar-banner-wrap { overflow: hidden; flex-shrink: 0; display: none; }
+#topbar-banner-wrap.visible { display: block; }
+
+/* Sidebar image */
+#sidebar-image-wrap { padding: 8px; display: none; }
+#sidebar-image-wrap.visible { display: block; }
+#sidebar-image-wrap img { width: 100%; border-radius: var(--radius-sm); object-fit: cover; max-height: 120px; }
 
 /* Calendar goal sections */
 .cal-goal-section { margin-bottom: 12px; }
@@ -960,9 +1029,6 @@ body.side-panel-open #main { margin-right: 440px; }
         <button class="sidebar-btn" data-view="goals" data-menu-label="목표" onclick="switchView('goals',this)">
           <i class="fa-solid fa-bullseye"></i><span>목표</span>
         </button>
-        <button class="sidebar-btn" data-view="weekly" data-menu-label="주간 보기" onclick="switchView('weekly',this)">
-          <i class="fa-solid fa-table-columns"></i><span>주간 보기</span>
-        </button>
         <button class="sidebar-btn" data-view="calendar" data-menu-label="캘린더" onclick="switchView('calendar',this)">
           <i class="fa-solid fa-calendar"></i><span>캘린더</span>
         </button>
@@ -988,6 +1054,7 @@ body.side-panel-open #main { margin-right: 440px; }
         </button>
       </div>
     </nav>
+    <div id="sidebar-image-wrap"></div>
     <div class="sidebar-footer">
       <button class="sidebar-btn" onclick="toggleSidebar()" title="사이드바 접기">
         <i class="fa-solid fa-chevron-left" id="sidebar-toggle-icon"></i>
@@ -996,21 +1063,8 @@ body.side-panel-open #main { margin-right: 440px; }
     </div>
   </aside>
 
-  <aside id="todo-list-panel" aria-label="리스트 패널">
-    <div class="todo-panel-body">
-      <div class="todo-panel-header">리스트</div>
-      <div id="todo-panel-lists" class="todo-panel-quick"></div>
-      <div class="todo-panel-divider"></div>
-      <div class="todo-panel-header">태그</div>
-      <div id="todo-panel-tags" class="todo-panel-quick"></div>
-    </div>
-    <div class="todo-panel-footer">
-      <div class="todo-panel-header">바로가기</div>
-      <div class="todo-panel-quick" id="todo-panel-shortcuts"></div>
-    </div>
-  </aside>
-
   <div id="main">
+    <div id="topbar-banner-wrap"><img id="header-banner" src="" alt=""></div>
     <div id="topbar">
       <button class="icon-btn" id="mobile-menu-btn" onclick="toggleMobileSidebar()" style="display:none">
         <i class="fa-solid fa-bars"></i>
@@ -1018,20 +1072,29 @@ body.side-panel-open #main { margin-right: 440px; }
       <span class="topbar-title" id="topbar-title">대시보드</span>
       <div class="topbar-spacer"></div>
       <div class="search-bar">
-        <i class="fa-solid fa-search"></i>
         <input type="text" placeholder="투두 검색..." id="search-input" oninput="handleSearch(this.value)">
       </div>
-      <button class="icon-btn" onclick="openSearchMobile()" title="검색"><i class="fa-solid fa-search"></i></button>
       <button class="icon-btn" onclick="openTodoModal()" title="새 투두 추가"><i class="fa-solid fa-plus"></i></button>
       <button class="icon-btn" onclick="toggleNotifications()" title="알림 설정" id="notif-bell-btn"><i class="fa-solid fa-bell"></i></button>
-      <button class="icon-btn" onclick="toggleTheme()" title="테마 전환" id="theme-icon"><i class="fa-solid fa-moon"></i></button>
+      <button class="icon-btn" onclick="toggleTheme()" title="테마 전환" id="theme-icon"><i class="fa-solid fa-circle-half-stroke"></i></button>
     </div>
+
+    <div class="main-inner">
+    <aside id="todo-list-panel" aria-label="리스트 패널">
+      <div class="todo-panel-body">
+        <div class="todo-panel-header">리스트</div>
+        <div id="todo-panel-lists" class="todo-panel-quick"></div>
+        <div class="todo-panel-divider"></div>
+        <div class="todo-panel-header">태그</div>
+        <div id="todo-panel-tags" class="todo-panel-quick"></div>
+      </div>
+    </aside>
 
     <div id="content">
       <!-- DASHBOARD -->
       <div class="view active" id="view-dashboard">
         <div class="page-title">안녕하세요 👋 <span class="page-subtitle" id="greeting-time"></span></div>
-        <div class="stats-grid" id="stats-grid"></div>
+        <div class="stats-grid" id="stats-grid" style="display:none"></div>
         <div class="two-col">
           <div>
             <div class="section-header">
@@ -1043,6 +1106,10 @@ body.side-panel-open #main { margin-right: 440px; }
           </div>
           <div>
             <div class="section-header">
+              <div class="section-title">이번 달 목표</div>
+            </div>
+            <div id="month-goals-dash"></div>
+            <div class="section-header" style="margin-top:16px">
               <div class="section-title">이번 주 목표</div>
             </div>
             <div id="week-goals-dash"></div>
@@ -1077,6 +1144,9 @@ body.side-panel-open #main { margin-right: 440px; }
           <button class="filter-btn" onclick="filterTodos('done',this,'today')">완료</button>
           <button class="filter-btn" onclick="filterTodos('pending',this,'today')">미완료</button>
           <button class="filter-btn" onclick="filterTodos('urgent',this,'today')">긴급</button>
+          <select class="form-select" id="today-list-filter" style="margin-left:auto;width:auto;padding:4px 24px 4px 8px;font-size:12px" onchange="filterByList(this.value);renderToday()">
+            <option value="all">전체 목록</option>
+          </select>
         </div>
         <div class="filter-bar tag-filter-bar"></div>
         <div class="todo-toolbar">
@@ -1111,6 +1181,9 @@ body.side-panel-open #main { margin-right: 440px; }
           <button class="filter-btn" onclick="setUpcomingFilter('week',this)">일주일 이내</button>
           <button class="filter-btn" onclick="setUpcomingFilter('overdue',this)">기한 초과</button>
           <button class="filter-btn" onclick="setUpcomingFilter('all',this)">전체</button>
+          <select class="form-select" id="upcoming-list-filter" style="margin-left:auto;width:auto;padding:4px 24px 4px 8px;font-size:12px" onchange="filterByList(this.value);renderUpcoming()">
+            <option value="all">전체 목록</option>
+          </select>
         </div>
         <div class="filter-bar tag-filter-bar"></div>
         <div class="todo-toolbar">
@@ -1169,23 +1242,19 @@ body.side-panel-open #main { margin-right: 440px; }
       <div class="view" id="view-calendar">
         <div class="page-title">캘린더</div>
         <!-- View mode tabs -->
-        <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
           <button class="filter-btn" id="cal-tab-month" onclick="setCalViewMode('month')">월</button>
-          <button class="filter-btn" id="cal-tab-week" onclick="setCalViewMode('week')">주</button>
-          <button class="filter-btn" id="cal-tab-day" onclick="setCalViewMode('day')">일</button>
+          <span style="display:inline-flex;align-items:center;gap:3px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px 5px">
+            <button id="cal-cday-minus" class="cal-nav-btn" onclick="changeCustomDays(-1)" style="width:26px;height:26px;font-size:14px;font-weight:700">−</button>
+            <button class="filter-btn" id="cal-tab-day" onclick="setCalViewMode('custom-days')" style="border:none;padding:4px 8px;min-width:44px;font-weight:600"><span id="cal-custom-days-num">3</span>일</button>
+            <button id="cal-cday-plus" class="cal-nav-btn" onclick="changeCustomDays(1)" style="width:26px;height:26px;font-size:14px;font-weight:700">+</button>
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:3px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px 5px">
+            <button id="cal-cwk-minus" class="cal-nav-btn" onclick="changeCustomWeeks(-1)" style="width:26px;height:26px;font-size:14px;font-weight:700">−</button>
+            <button class="filter-btn" id="cal-tab-week" onclick="setCalViewMode('custom-weeks')" style="border:none;padding:4px 8px;min-width:44px;font-weight:600"><span id="cal-custom-weeks-num">2</span>주</button>
+            <button id="cal-cwk-plus" class="cal-nav-btn" onclick="changeCustomWeeks(1)" style="width:26px;height:26px;font-size:14px;font-weight:700">+</button>
+          </span>
           <button class="filter-btn" id="cal-tab-agenda" onclick="setCalViewMode('agenda')">일정</button>
-          <span style="display:inline-flex;align-items:center;gap:2px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px 4px">
-            <button class="filter-btn" id="cal-tab-custom-days" onclick="setCalViewMode('custom-days')" style="border:none;padding:3px 7px">사용자설정일</button>
-            <button id="cal-cday-minus" class="cal-nav-btn" onclick="changeCustomDays(-1)" style="width:20px;height:20px;font-size:10px">−</button>
-            <span id="cal-custom-days-num" style="font-size:12px;min-width:14px;text-align:center;font-weight:600"></span>
-            <button id="cal-cday-plus" class="cal-nav-btn" onclick="changeCustomDays(1)" style="width:20px;height:20px;font-size:10px">+</button>
-          </span>
-          <span style="display:inline-flex;align-items:center;gap:2px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px 4px">
-            <button class="filter-btn" id="cal-tab-custom-weeks" onclick="setCalViewMode('custom-weeks')" style="border:none;padding:3px 7px">사용자설정주</button>
-            <button id="cal-cwk-minus" class="cal-nav-btn" onclick="changeCustomWeeks(-1)" style="width:20px;height:20px;font-size:10px">−</button>
-            <span id="cal-custom-weeks-num" style="font-size:12px;min-width:14px;text-align:center;font-weight:600"></span>
-            <button id="cal-cwk-plus" class="cal-nav-btn" onclick="changeCustomWeeks(1)" style="width:20px;height:20px;font-size:10px">+</button>
-          </span>
         </div>
         <!-- Unified nav bar -->
         <div id="cal-nav-bar" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
@@ -1194,10 +1263,34 @@ body.side-panel-open #main { margin-right: 440px; }
             <span class="cal-month-label" id="cal-nav-label"></span>
             <button class="cal-nav-btn" onclick="calNavNext()"><i class="fa-solid fa-chevron-right"></i></button>
           </div>
-          <button class="filter-btn" onclick="calNavToday()">오늘</button>
+          <div style="display:flex;gap:6px;align-items:center">
+            <button class="filter-btn" onclick="calNavToday()">오늘</button>
+            <button class="filter-btn" id="cal-sidebar-toggle-btn" onclick="toggleCalGoalsSidebar()" title="목표 및 할 일 보기" style="font-size:11px"><i class="fa-solid fa-table-columns"></i> 목표</button>
+          </div>
         </div>
-        <!-- Dynamic content area -->
-        <div id="cal-content"></div>
+        <!-- Dynamic content area with sidebar -->
+        <div style="display:flex;gap:0;overflow:hidden;flex:1;min-height:0">
+          <div id="cal-content" style="flex:1;overflow-y:auto;padding-right:0"></div>
+          <div id="cal-goals-sidebar">
+            <div class="section-header"><div class="section-title" id="cal-selected-label">날짜 선택</div></div>
+            <div class="cal-detail-panel" id="cal-detail-panel" style="display:none">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+                <div style="flex:1">
+                  <div class="cal-detail-title" id="cal-detail-title"></div>
+                  <div class="cal-detail-meta" id="cal-detail-meta"></div>
+                  <div class="cal-detail-body" id="cal-detail-body"></div>
+                </div>
+                <button class="icon-btn" onclick="closeCalDetail()" title="닫기"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap" id="cal-detail-actions"></div>
+            </div>
+            <div id="cal-dday-section" class="cal-goal-section"></div>
+            <div id="cal-monthly-goals-section" class="cal-goal-section"></div>
+            <div id="cal-weekly-goals-section" class="cal-goal-section"></div>
+            <div id="cal-day-todos"></div>
+            <button class="btn-add-todo" style="margin-top:10px;width:100%;justify-content:center" onclick="openTodoModal()"><i class="fa-solid fa-plus"></i>이 날에 추가</button>
+          </div>
+        </div>
       </div>
 
       <!-- WEEKLY VIEW (redirects to calendar week mode) -->
@@ -1248,6 +1341,10 @@ body.side-panel-open #main { margin-right: 440px; }
       <div class="view" id="view-dday">
         <div class="page-title">D-Day</div>
         <div class="section-header">
+          <div style="display:flex;gap:6px;align-items:center">
+            <button class="filter-btn active" id="dday-layout-list" onclick="setDdayLayout('list',this)" title="리스트 보기"><i class="fa-solid fa-list"></i></button>
+            <button class="filter-btn" id="dday-layout-grid" onclick="setDdayLayout('grid',this)" title="그리드 보기"><i class="fa-solid fa-grid-2"></i></button>
+          </div>
           <button class="btn-add-todo" onclick="openDdayModal()"><i class="fa-solid fa-plus"></i>D-Day 추가</button>
         </div>
         <div id="dday-list"></div>
@@ -1255,7 +1352,10 @@ body.side-panel-open #main { margin-right: 440px; }
 
       <!-- POMODORO -->
       <div class="view" id="view-pomodoro">
-        <div class="page-title">뽀모도로 타이머</div>
+        <div class="page-title" style="display:flex;align-items:center;justify-content:space-between">
+          <span>뽀모도로 타이머</span>
+          <button class="filter-btn" onclick="openPomoWindow()" title="별도 창으로 열기" style="font-size:12px"><i class="fa-solid fa-arrow-up-right-from-square"></i> 새 창</button>
+        </div>
         <div class="two-col">
           <div class="card" style="text-align:center">
             <div style="display:flex;gap:6px;justify-content:center;margin-bottom:20px">
@@ -1385,6 +1485,44 @@ body.side-panel-open #main { margin-right: 440px; }
                 <input class="form-input" type="text" id="accent-hex" value="#6c63ff" style="width:100px" onchange="setAccentColor(this.value)">
               </div>
             </div>
+            <div class="section-title" style="margin-bottom:12px">헤더 이미지 설정</div>
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <span style="font-size:13px">헤더 이미지 표시</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="header-img-toggle" onchange="applyHeaderImageToggle(this.checked)">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div id="header-img-upload-area">
+                <div class="attach-dropzone" onclick="document.getElementById('header-img-input').click()" style="cursor:pointer;padding:10px">
+                  <i class="fa-solid fa-image"></i> 헤더 이미지 선택
+                  <input type="file" id="header-img-input" accept="image/*" style="display:none" onchange="uploadHeaderImage(event)">
+                </div>
+                <div id="header-img-preview" style="margin-top:8px;display:none">
+                  <img id="header-img-preview-img" src="" alt="" style="width:100%;max-height:80px;object-fit:cover;border-radius:var(--radius-sm)">
+                  <button class="btn-secondary" style="margin-top:6px;font-size:11px;padding:4px 10px" onclick="removeHeaderImage()"><i class="fa-solid fa-xmark"></i> 이미지 제거</button>
+                </div>
+              </div>
+            </div>
+            <div class="section-title" style="margin-bottom:12px">사이드바 이미지 설정</div>
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <span style="font-size:13px">사이드바 이미지 표시</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="sidebar-img-toggle" onchange="applySidebarImageToggle(this.checked)">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="attach-dropzone" onclick="document.getElementById('sidebar-img-input').click()" style="cursor:pointer;padding:10px">
+                <i class="fa-solid fa-image"></i> 사이드바 이미지 선택
+                <input type="file" id="sidebar-img-input" accept="image/*" style="display:none" onchange="uploadSidebarImage(event)">
+              </div>
+              <div id="sidebar-img-preview" style="margin-top:8px;display:none">
+                <img id="sidebar-img-preview-img" src="" alt="" style="width:100%;max-height:80px;object-fit:cover;border-radius:var(--radius-sm)">
+                <button class="btn-secondary" style="margin-top:6px;font-size:11px;padding:4px 10px" onclick="removeSidebarImage()"><i class="fa-solid fa-xmark"></i> 이미지 제거</button>
+              </div>
+            </div>
             <div class="section-title" style="margin-bottom:12px">투두 리스트 관리</div>
             <div class="card" style="margin-bottom:16px">
               <div id="lists-manager"></div>
@@ -1408,32 +1546,38 @@ body.side-panel-open #main { margin-right: 440px; }
               </div>
               <button class="btn-secondary" style="margin-top:8px" onclick="resetPriorityLabels()"><i class="fa-solid fa-rotate-left"></i> 기본 이름으로 복원</button>
             </div>
-            <div class="section-title" style="margin-bottom:12px">표시 옵션</div>
-            <div class="card" style="margin-bottom:16px">
-              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px">
-                <input type="checkbox" id="hide-completed-checkbox" onchange="setHideCompleted(this.checked)" style="accent-color:var(--accent)">
-                <span>완료한 할 일 숨기기</span>
-              </label>
-            </div>
-            <div class="section-title" style="margin-bottom:12px">알림 팝업</div>
-            <div class="card" style="margin-bottom:16px">
-              <div class="form-group">
-                <label class="form-label">표시 위치</label>
-                <select class="form-select" id="toast-position-select" onchange="setToastPosition(this.value)">
-                  <option value="top-right">오른쪽 위</option>
-                  <option value="top-left">왼쪽 위</option>
-                  <option value="bottom-right">오른쪽 아래</option>
-                  <option value="bottom-left">왼쪽 아래</option>
-                </select>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+              <div>
+                <div class="section-title" style="margin-bottom:12px">표시 옵션</div>
+                <div class="card" style="height:100%">
+                  <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px">
+                    <input type="checkbox" id="hide-completed-checkbox" onchange="setHideCompleted(this.checked)" style="accent-color:var(--accent)">
+                    <span>완료한 할 일 숨기기</span>
+                  </label>
+                </div>
               </div>
-              <p style="font-size:11px;color:var(--text-muted)">팝업을 클릭하면 바로 사라집니다.</p>
+              <div>
+                <div class="section-title" style="margin-bottom:12px">알림 팝업</div>
+                <div class="card" style="height:100%">
+                  <div class="form-group">
+                    <label class="form-label">표시 위치</label>
+                    <select class="form-select" id="toast-position-select" onchange="setToastPosition(this.value)">
+                      <option value="top-right">오른쪽 위</option>
+                      <option value="top-left">왼쪽 위</option>
+                      <option value="bottom-right">오른쪽 아래</option>
+                      <option value="bottom-left">왼쪽 아래</option>
+                    </select>
+                  </div>
+                  <p style="font-size:11px;color:var(--text-muted)">팝업을 클릭하면 바로 사라집니다.</p>
+                </div>
+              </div>
             </div>
           </div>
           <div>
             <div class="section-title" style="margin-bottom:12px">투두 편집 방식</div>
             <div class="card" style="margin-bottom:16px">
               <div class="form-label" style="margin-bottom:10px">투두 편집 창 형태</div>
-              <div style="display:flex;flex-direction:column;gap:8px" id="edit-mode-options">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="edit-mode-options">
                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 12px;border:2px solid var(--border);border-radius:var(--radius-sm);transition:all 0.15s" id="edit-mode-modal-label">
                   <input type="radio" name="todo-edit-mode" value="modal" onchange="setTodoEditMode('modal')" style="accent-color:var(--accent)">
                   <div><div style="font-size:13px;font-weight:500"><i class="fa-solid fa-window-maximize" style="margin-right:6px;color:var(--accent)"></i>팝업 (기본)</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">화면 중앙에 팝업 창으로 열림</div></div>
@@ -1526,7 +1670,7 @@ body.side-panel-open #main { margin-right: 440px; }
                   <button class="btn-danger" style="padding:4px 8px;font-size:11px;" onclick="disconnectGcal()">해제</button>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-                  <span style="font-size:12px;font-weight:600;">캘린더 목록</span>
+                  <span style="font-size:12px;font-weight:600;">연동 캘린더 선택</span>
                   <button class="btn-primary" style="padding:4px 8px;font-size:11px;" onclick="syncGcal()"><i class="fa-solid fa-rotate"></i> 동기화</button>
                 </div>
                 <div id="gcal-calendars" style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px;"></div>
@@ -1583,6 +1727,18 @@ body.side-panel-open #main { margin-right: 440px; }
         </div>
       </div>
     </div>
+    </div><!-- /.main-inner -->
+  </div>
+</div>
+
+<!-- CUSTOM CONFIRM DIALOG -->
+<div id="confirm-overlay">
+  <div id="confirm-box">
+    <div id="confirm-msg">정말 삭제하시겠어요?</div>
+    <div id="confirm-actions">
+      <button class="btn-secondary" id="confirm-no">취소</button>
+      <button class="btn-danger" id="confirm-yes">삭제</button>
+    </div>
   </div>
 </div>
 
@@ -1625,16 +1781,17 @@ body.side-panel-open #main { margin-right: 440px; }
 </div>
 
 <div class="modal-overlay" id="todo-modal">
-  <div class="modal">
+  <div class="modal" style="display:flex;flex-direction:column;overflow:hidden">
     <div class="modal-header">
       <div class="modal-title" id="todo-modal-title">새 투두 추가</div>
       <button class="icon-btn" onclick="closeTodoModal()"><i class="fa-solid fa-x"></i></button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" style="overflow-y:auto;flex:1">
       <input type="hidden" id="todo-edit-id">
       <input type="hidden" id="todo-start-input">
       <input type="hidden" id="todo-due-input">
-      <div class="form-row">
+      <input type="checkbox" id="todo-pin-input" style="display:none">
+      <div class="form-row" style="grid-template-columns:1fr 1fr 1fr">
         <div class="form-group mini-cal-wrap" id="mini-cal-start-wrap">
           <label class="form-label">시작일</label>
           <div class="mini-cal-display empty" id="mini-cal-start-display" onclick="toggleMiniCal('start', event)">날짜 없음</div>
@@ -1645,8 +1802,6 @@ body.side-panel-open #main { margin-right: 440px; }
           <div class="mini-cal-display empty" id="mini-cal-due-display" onclick="toggleMiniCal('due', event)">날짜 없음</div>
           <div class="mini-cal-popup" id="mini-cal-due-popup"></div>
         </div>
-      </div>
-      <div class="form-row">
         <div class="form-group">
           <label class="form-label">반복</label>
           <select class="form-select" id="todo-repeat-input" onchange="handleRepeatChange()">
@@ -1659,11 +1814,6 @@ body.side-panel-open #main { margin-right: 440px; }
             <option value="weekends">매일 주말</option>
             <option value="custom">사용자 설정...</option>
           </select>
-        </div>
-        <div class="form-group" style="display:flex;align-items:flex-end;gap:10px">
-          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)">
-            <input type="checkbox" id="todo-pin-input" style="accent-color:var(--accent)"> 상단 고정
-          </label>
         </div>
       </div>
       <div id="custom-repeat-row" style="display:none;background:var(--bg-tertiary);padding:10px 12px;border-radius:var(--radius-sm);margin-bottom:4px">
@@ -1681,16 +1831,21 @@ body.side-panel-open #main { margin-right: 440px; }
       </div>
       <div class="form-group">
         <label class="form-label">제목 *</label>
-        <input class="form-input" type="text" id="todo-title-input" placeholder="할 일을 입력하세요..." style="font-size:18px;font-weight:700;padding:12px 14px;letter-spacing:-0.02em">
+        <div style="display:flex;align-items:center;gap:8px">
+          <button id="todo-pin-btn" type="button" onclick="togglePinBtn()" title="상단 고정" style="flex-shrink:0;width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-tertiary);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition)">
+            <i class="fa-solid fa-thumbtack" style="font-size:13px"></i>
+          </button>
+          <input class="form-input" type="text" id="todo-title-input" placeholder="할 일을 입력하세요..." style="flex:1;font-size:18px;font-weight:700;padding:12px 14px;letter-spacing:-0.02em">
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label">설명</label>
-        <textarea class="form-input" id="todo-desc-input" placeholder="상세 내용 (선택)"></textarea>
+        <textarea class="form-input" id="todo-desc-input" placeholder="상세 내용 (선택)" oninput="autoGrow(this)" style="min-height:64px"></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">하위 작업</label>
-        <div id="subtasks-container"></div>
-        <div style="display:flex;gap:8px;margin-top:6px">
+        <div id="subtasks-container" style="min-height:48px;max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 8px;background:var(--bg-tertiary);margin-bottom:6px"></div>
+        <div style="display:flex;gap:8px">
           <input class="form-input" type="text" id="subtask-input" placeholder="하위 작업 추가... (Enter)" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addSubtask();}">
           <button class="btn-secondary" onclick="addSubtask()">추가</button>
         </div>
@@ -1715,31 +1870,33 @@ body.side-panel-open #main { margin-right: 440px; }
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">태그 (Enter로 추가)</label>
-        <div class="tags-container-wrap">
-          <div class="tags-container" id="tags-container" onclick="document.getElementById('tag-input-field').focus()">
-            <input class="tag-input" type="text" id="tag-input-field" placeholder="태그 입력..." onkeydown="handleTagInput(event)" oninput="handleTagSuggestInput()" onfocus="handleTagSuggestInput()" onblur="setTimeout(hideTagSuggest,150)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">태그 (Enter로 추가)</label>
+          <div class="tags-container-wrap">
+            <div class="tags-container" id="tags-container" onclick="document.getElementById('tag-input-field').focus()">
+              <input class="tag-input" type="text" id="tag-input-field" placeholder="태그 입력..." onkeydown="handleTagInput(event)" oninput="handleTagSuggestInput()" onfocus="handleTagSuggestInput()" onblur="setTimeout(hideTagSuggest,150)">
+            </div>
+            <div class="tag-suggest-dropdown" id="tag-suggest-dropdown"></div>
           </div>
-          <div class="tag-suggest-dropdown" id="tag-suggest-dropdown"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">첨부파일</label>
+          <div class="attach-dropzone" id="todo-attach-dropzone"
+            ondragover="handleAttachDragOver(event)" ondragleave="handleAttachDragLeave(event)" ondrop="handleAttachDrop(event)">
+            <i class="fa-solid fa-paperclip"></i> 클릭 또는 드래그
+            <input type="file" id="todo-attach-input" multiple accept="image/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="handleAttachFileSelect(event)">
+          </div>
+          <div id="todo-attachments-preview"></div>
         </div>
       </div>
       <input type="hidden" id="todo-matrix-input" value="q2">
       <div class="form-group">
-        <label class="form-label">첨부파일</label>
-        <div class="attach-dropzone" id="todo-attach-dropzone"
-          ondragover="handleAttachDragOver(event)" ondragleave="handleAttachDragLeave(event)" ondrop="handleAttachDrop(event)">
-          <i class="fa-solid fa-paperclip"></i> 이미지·문서를 드래그하거나 클릭하여 추가
-          <input type="file" id="todo-attach-input" multiple accept="image/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="handleAttachFileSelect(event)">
-        </div>
-        <div id="todo-attachments-preview"></div>
-      </div>
-      <div class="form-group">
         <label class="form-label">목표에 등록</label>
-        <select class="form-select" id="todo-goal-select" multiple style="min-height:52px;max-height:110px"></select>
+        <select class="form-select" id="todo-goal-select" multiple style="min-height:36px;max-height:80px"></select>
       </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-sticky-footer">
       <button class="btn-danger" id="todo-delete-btn" onclick="deleteTodo()" style="display:none;margin-right:auto">삭제</button>
       <button class="btn-secondary" onclick="closeTodoModal()">취소</button>
       <button class="btn-primary" onclick="saveTodo()">저장</button>
@@ -2106,16 +2263,24 @@ function getAllTags() {
 }
 function filterTodosByTags(todos) {
   if(!state.selectedTags || !state.selectedTags.length) return todos;
+  const mode = state.tagFilterMode || 'or';
+  if(mode === 'and') {
+    return todos.filter(t => state.selectedTags.every(tag => (t.tags || []).includes(tag)));
+  }
   return todos.filter(t => (t.tags || []).some(tag => state.selectedTags.includes(tag)));
 }
 function renderTagFilterBars() {
   const tags = getAllTags();
   const allActive = !state.selectedTags || !state.selectedTags.length;
+  const mode = state.tagFilterMode || 'or';
+  const andOrBtn = tags.length && !allActive
+    ? `<button type="button" class="filter-btn" style="margin-left:6px;font-size:10px;opacity:0.85;background:var(--bg-tertiary);border:1px solid var(--border)" onclick="toggleTagFilterMode()" title="태그 필터 조건 전환">${mode === 'and' ? 'AND' : 'OR'}</button>`
+    : '';
   const html = `<button type="button" class="filter-btn ${allActive ? 'active' : ''}" onclick="toggleTagFilter('all')">전체</button>` +
     tags.map(t => {
       const on = (state.selectedTags || []).includes(t);
       return `<button type="button" class="filter-btn ${on ? 'active' : ''}" onclick="toggleTagFilter('${t.replace(/'/g, "\\'")}')">${tagBadge(t)} ${t}</button>`;
-    }).join('');
+    }).join('') + andOrBtn;
   document.querySelectorAll('.tag-filter-bar').forEach(bar => { bar.innerHTML = html; });
 }
 function toggleTagFilter(tag) {
@@ -2130,6 +2295,12 @@ function toggleTagFilter(tag) {
   save();
   renderTagFilterBars();
   renderTodoListPanel();
+  renderView(state.currentView);
+}
+function toggleTagFilterMode() {
+  state.tagFilterMode = (state.tagFilterMode === 'and') ? 'or' : 'and';
+  save();
+  renderTagFilterBars();
   renderView(state.currentView);
 }
 function toggleSubtasksExpand(todoId, e) {
@@ -2249,8 +2420,7 @@ function updateTodoListPanel(view) {
 }
 function renderTodoListPanel() {
   const listsEl = document.getElementById('todo-panel-lists');
-  const shortcutsEl = document.getElementById('todo-panel-shortcuts');
-  if(!listsEl || !shortcutsEl) return;
+  if(!listsEl) return;
   const counts = {};
   state.lists.forEach(l => { counts[l] = 0; });
   state.todos.filter(t => !t.done).forEach(t => {
@@ -2266,17 +2436,15 @@ function renderTodoListPanel() {
   const tagsEl = document.getElementById('todo-panel-tags');
   if(tagsEl) {
     const allActive = !state.selectedTags || !state.selectedTags.length;
+    const tagColors = ['#6c63ff','#22c55e','#f59e0b','#ef4444','#3b82f6','#ec4899','#14b8a6','#f97316'];
     tagsEl.innerHTML =
       `<button type="button" class="todo-panel-item ${allActive?'active':''}" onclick="toggleTagFilter('all')"><span>전체</span></button>` +
-      getAllTags().map(t => {
+      getAllTags().map((t, idx) => {
         const on = (state.selectedTags||[]).includes(t);
-        return `<button type="button" class="todo-panel-item ${on?'active':''}" onclick="toggleTagFilter('${t.replace(/'/g,"\\'")}')"><span>${t}</span></button>`;
+        const clr = tagColors[idx % tagColors.length];
+        return `<button type="button" class="todo-panel-item ${on?'active':''}" onclick="toggleTagFilter('${t.replace(/'/g,"\\'")}')"><span style="display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:${clr};flex-shrink:0;display:inline-block"></span>${t}</span></button>`;
       }).join('');
   }
-  shortcutsEl.innerHTML = `
-    <button type="button" class="todo-panel-item" onclick="switchView('goals', document.querySelector('[data-view=goals]'))"><span><i class="fa-solid fa-bullseye"></i> 목표</span><span class="todo-panel-count">${state.goals.length}</span></button>
-    <button type="button" class="todo-panel-item" onclick="switchView('habits', document.querySelector('[data-view=habits]'))"><span><i class="fa-solid fa-fire"></i> 습관</span><span class="todo-panel-count">${state.habits.length}</span></button>
-    <button type="button" class="todo-panel-item" onclick="switchView('pomodoro', document.querySelector('[data-view=pomodoro]'))"><span><i class="fa-solid fa-stopwatch"></i> 뽀모도로</span></button>`;
 }
 function filterByListFromPanel(listName) {
   state.currentListFilter = listName;
@@ -2683,7 +2851,7 @@ function initSidebarSort() {
 
 // ========== VIEWS ==========
 function switchView(v, btn) {
-  if(v === 'weekly') { state.calViewMode = 'week'; v = 'calendar'; }
+  if(v === 'weekly') { state.calViewMode = 'custom-weeks'; v = 'calendar'; }
   clearSidebarDragState();
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   const viewEl = document.getElementById('view-' + v);
@@ -2728,6 +2896,7 @@ function openTodoModal(id) {
   document.getElementById('todo-due-input').value = state.calSelectedDate || '';
   document.getElementById('todo-repeat-input').value = 'none';
   document.getElementById('todo-pin-input').checked = false;
+  updatePinBtnStyle();
   document.getElementById('todo-matrix-input').value = 'q3';
   document.getElementById('custom-repeat-row').style.display = 'none';
   document.getElementById('todo-delete-btn').style.display = 'none';
@@ -2761,6 +2930,7 @@ function openTodoModal(id) {
         document.getElementById('todo-repeat-input').value = repeatVal;
       }
       document.getElementById('todo-pin-input').checked = t.pinned || false;
+      updatePinBtnStyle();
       state.currentTodoTags = [...(t.tags || [])];
       state.currentSubtasks = (t.subtasks || []).map(s => ({...s}));
       state.currentAttachments = (t.attachments || []).map(a => ({...a}));
@@ -2867,11 +3037,11 @@ applySidebarModes();
 }
 function deleteTodo() {
   const id = document.getElementById('todo-edit-id').value;
-  if(id && confirm('정말 삭제하시겠어요?')) { state.todos = state.todos.filter(x=>x.id!==id); save(); closeTodoModal(); updateBadges(); renderView(state.currentView);
-updateFabVisibility();
-renderStopwatch();
-initSidebarSort();
-applySidebarModes(); showToast('삭제되었습니다', 'info'); }
+  if(!id) return;
+  showConfirm('정말 삭제하시겠어요?', () => {
+    state.todos = state.todos.filter(x=>x.id!==id); save(); closeTodoModal(); updateBadges(); renderView(state.currentView);
+    updateFabVisibility(); renderStopwatch(); initSidebarSort(); applySidebarModes(); showToast('삭제되었습니다', 'info');
+  });
 }
 function calcNextRepeatDate(t) {
   const base = t.due ? new Date(t.due) : new Date();
@@ -3091,6 +3261,21 @@ function renderDashboard() {
   document.getElementById('today-count').textContent = todayList.length;
   renderList('today-list', todayList, '오늘 할 일이 없습니다 🎉');
 
+  const mk = getGoalsMonthKey ? getGoalsMonthKey() : `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
+  const monthGoals = state.goals.filter(g=>g.type==='monthly' && g.periodKey===mk).slice(0,2);
+  const mgEl = document.getElementById('month-goals-dash');
+  if(mgEl) mgEl.innerHTML = monthGoals.length ? monthGoals.map(g=>{
+    if(!g.linkedTodos) g.linkedTodos = [];
+    const linked = g.linkedTodos.map(id=>state.todos.find(t=>t.id===id)).filter(Boolean);
+    const done = linked.filter(t=>t.done).length;
+    const total = linked.length;
+    const p = total ? Math.round((done/total)*100) : 0;
+    return `<div class="goal-card" onclick="switchView('goals')" style="cursor:pointer">
+      <div class="goal-header"><div class="goal-title">${g.title}</div><div class="goal-percent">${p}%</div></div>
+      ${total ? `<div class="progress-bar"><div class="progress-fill ${p>=100?'success':''}" style="width:${p}%"></div></div><div class="goal-meta">${done}/${total} 완료</div>` : '<div class="goal-meta" style="font-size:11px">연결된 투두 없음</div>'}
+    </div>`;
+  }).join('') : '<div style="font-size:13px;color:var(--text-muted);padding:10px">월간 목표를 설정해보세요</div>';
+
   const wk = getGoalsWeekKey(0);
   const weekGoals = state.goals.filter(g=>g.type==='weekly' && g.periodKey===wk).slice(0,2);
   document.getElementById('week-goals-dash').innerHTML = weekGoals.length ? weekGoals.map(g=>{
@@ -3127,6 +3312,14 @@ function renderDashboard() {
 }
 
 // ========== TODAY ==========
+function _syncListFilterDropdown(selId) {
+  const sel = document.getElementById(selId);
+  if(!sel) return;
+  const cur = state.currentListFilter || 'all';
+  const opts = `<option value="all">전체 목록</option>` + (state.lists||[]).map(l=>`<option value="${l}" ${cur===l?'selected':''}>${l}</option>`).join('');
+  sel.innerHTML = opts;
+  sel.value = cur;
+}
 function renderToday() {
   document.getElementById('today-date-label').textContent = fmtFull(todayStr());
   let todos = state.todos.filter(t=>t.due===todayStr());
@@ -3137,6 +3330,7 @@ function renderToday() {
   todos = filterTodosByList(todos);
   todos = filterTodosByTags(todos);
   renderTagFilterBars();
+  _syncListFilterDropdown('today-list-filter');
   renderTodosForView('today-full-list', 'today-kanban', todos, '오늘 할 일이 없습니다 🎉');
 }
 function filterTodos(f, btn, view) {
@@ -3166,6 +3360,7 @@ function renderUpcoming() {
   todos = filterTodosByList(todos);
   todos = filterTodosByTags(todos);
   renderTagFilterBars();
+  _syncListFilterDropdown('upcoming-list-filter');
   renderTodosForView('upcoming-list', 'upcoming-kanban', todos, '예정된 할 일이 없습니다');
 }
 
@@ -3246,7 +3441,7 @@ function renderDump() {
     <div class="todo-check ${t.done?'checked':''}" onclick="toggleDone('${t.id}')"></div>
     <div class="todo-title" onclick="openTodoModal('${t.id}')" style="cursor:pointer">${t.title}</div>
     <button class="todo-action" onclick="openTodoModal('${t.id}')" title="자세히"><i class="fa-solid fa-pen"></i></button>
-    <button class="todo-action" onclick="if(confirm('삭제?')){state.todos=state.todos.filter(x=>x.id!=='${t.id}');save();renderDump();}" title="삭제"><i class="fa-solid fa-trash"></i></button>
+    <button class="todo-action" onclick="showConfirm('덤프에서 삭제할까요?',()=>{state.todos=state.todos.filter(x=>x.id!=='${t.id}');save();renderDump();})" title="삭제"><i class="fa-solid fa-trash"></i></button>
   </div>`).join('');
 }
 function addDumpTodo() {
@@ -3440,10 +3635,13 @@ function calNavToday() {
 }
 function renderCalendar() {
   const mode = state.calViewMode || 'month';
-  ['month','week','day','agenda','custom-days','custom-weeks'].forEach(m => {
-    const tab = document.getElementById(`cal-tab-${m}`);
-    if(tab) tab.classList.toggle('active', mode===m);
+  const tabMap = {'month':'cal-tab-month','agenda':'cal-tab-agenda','custom-days':'cal-tab-day','custom-weeks':'cal-tab-week','day':'cal-tab-day','week':'cal-tab-week'};
+  ['cal-tab-month','cal-tab-day','cal-tab-week','cal-tab-agenda'].forEach(id=>{
+    const t=document.getElementById(id); if(t) t.classList.remove('active');
   });
+  const tabId = tabMap[mode] || ('cal-tab-'+mode);
+  const activeTab = document.getElementById(tabId);
+  if(activeTab) activeTab.classList.add('active');
   const dNum = document.getElementById('cal-custom-days-num');
   const wNum = document.getElementById('cal-custom-weeks-num');
   const cd = state.calCustomDays||3, cw = state.calCustomWeeks||2;
@@ -3463,6 +3661,14 @@ function renderCalendar() {
   if(mode==='agenda')       { _renderCalAgenda(); return; }
   if(mode==='custom-days')  { _renderCalCustomDays(); return; }
   if(mode==='custom-weeks') { _renderCalCustomWeeks(); return; }
+}
+function toggleCalGoalsSidebar() {
+  const sb = document.getElementById('cal-goals-sidebar');
+  const btn = document.getElementById('cal-sidebar-toggle-btn');
+  if(!sb) return;
+  const isOpen = sb.classList.contains('open');
+  sb.classList.toggle('open', !isOpen);
+  if(btn) btn.classList.toggle('active', !isOpen);
 }
 function _calRightPanelHtml() {
   return `
@@ -3508,12 +3714,9 @@ function _renderCalMonth() {
   const remaining=42-first-daysInMonth;
   for(let i=1;i<=remaining;i++) cells+=`<div class="cal-day other-month"><span class="cal-num">${i}</span></div>`;
   document.getElementById('cal-content').innerHTML=`
-    <div class="two-col">
-      <div class="card">
-        <div class="calendar-grid">${days.map(d=>`<div class="cal-header">${d}</div>`).join('')}</div>
-        <div class="calendar-grid" id="calendar-grid">${cells}</div>
-      </div>
-      <div>${_calRightPanelHtml()}</div>
+    <div class="card">
+      <div class="calendar-grid">${days.map(d=>`<div class="cal-header">${d}</div>`).join('')}</div>
+      <div class="calendar-grid" id="calendar-grid">${cells}</div>
     </div>`;
   if(state.calSelectedDate) renderCalDayTodos();
 }
@@ -3740,7 +3943,7 @@ function changeMonth(dir) { state.calMonth += dir; if(state.calMonth<0){state.ca
 function goToToday() { state.calYear=new Date().getFullYear(); state.calMonth=new Date().getMonth(); state.calSelectedDate=todayStr(); renderCalendar(); }
 
 // ========== WEEKLY (redirected to calendar week mode) ==========
-function renderWeekly() { state.calViewMode = 'week'; renderCalendar(); }
+function renderWeekly() { state.calViewMode = 'custom-weeks'; renderCalendar(); }
 function changeWeek(dir) { state.weekOffset += dir; renderCalendar(); }
 
 // ========== GOALS ==========
@@ -3981,17 +4184,47 @@ function renderDdays() {
     const da=Math.abs(diffDays(a.date,todayStr())), db=Math.abs(diffDays(b.date,todayStr())); return da-db;
   });
   if(!sorted.length) { el.innerHTML = `<div class="empty-state"><i class="fa-solid fa-flag"></i><p>D-Day를 추가해보세요</p></div>`; return; }
+  const layout = state.ddayLayout || 'list';
+  el.className = layout === 'grid' ? 'dday-grid-layout' : '';
   el.innerHTML = sorted.map(d=>{
     const diff = diffDays(d.date, todayStr());
     const label = diff===0?'D-Day':diff>0?`D-${diff}`:`D+${Math.abs(diff)}`;
     return `<div class="dday-card">
       <div class="dday-count ${diff<0?'past':diff===0?'today':''}">${label}</div>
       <div class="dday-info"><div class="dday-name">${d.name}</div><div class="dday-date">${fmtFull(d.date)}</div></div>
-      <button class="todo-action" onclick="deleteDday('${d.id}')"><i class="fa-solid fa-trash"></i></button>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        <button class="todo-action" onclick="editDday('${d.id}')" title="편집"><i class="fa-solid fa-pen"></i></button>
+        <button class="todo-action" onclick="deleteDday('${d.id}')" title="삭제"><i class="fa-solid fa-trash"></i></button>
+      </div>
     </div>`;
   }).join('');
 }
-function openDdayModal() { document.getElementById('dday-edit-id').value=''; document.getElementById('dday-name-input').value=''; document.getElementById('dday-date-input').value=''; document.getElementById('dday-modal').classList.add('open'); }
+function setDdayLayout(layout, btn) {
+  state.ddayLayout = layout;
+  document.querySelectorAll('#dday-layout-list,#dday-layout-grid').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  save(); renderDdays();
+}
+function editDday(id) {
+  const d = state.ddays.find(x=>x.id===id);
+  if(!d) return;
+  const editIdEl = document.getElementById('dday-edit-id');
+  if(editIdEl) editIdEl.value = d.id;
+  document.getElementById('dday-name-input').value = d.name;
+  document.getElementById('dday-date-input').value = d.date;
+  const titleEl = document.querySelector('#dday-modal .modal-title');
+  if(titleEl) titleEl.textContent = 'D-Day 편집';
+  document.getElementById('dday-modal').classList.add('open');
+}
+function openDdayModal() {
+  const editIdEl = document.getElementById('dday-edit-id');
+  if(editIdEl) editIdEl.value = '';
+  document.getElementById('dday-name-input').value = '';
+  document.getElementById('dday-date-input').value = '';
+  const titleEl = document.querySelector('#dday-modal .modal-title');
+  if(titleEl) titleEl.textContent = 'D-Day 추가';
+  document.getElementById('dday-modal').classList.add('open');
+}
 function openDdayModalForDate(d) {
   openDdayModal();
   const inp = document.getElementById('dday-date-input');
@@ -4002,11 +4235,24 @@ function saveDday() {
   const name = document.getElementById('dday-name-input').value.trim();
   const date = document.getElementById('dday-date-input').value;
   if(!name||!date) { showToast('이름과 날짜를 입력해주세요', 'error'); return; }
-  state.ddays.push({ id: genId(), name, date }); save(); closeDdayModal(); renderDdays();
+  const editIdEl = document.getElementById('dday-edit-id');
+  const editId = editIdEl ? editIdEl.value : '';
+  if(editId) {
+    const idx = state.ddays.findIndex(d=>d.id===editId);
+    if(idx>=0) state.ddays[idx] = {...state.ddays[idx], name, date};
+    showToast('D-Day가 수정되었습니다', 'success');
+  } else {
+    state.ddays.push({ id: genId(), name, date });
+    showToast('D-Day가 추가되었습니다', 'success');
+  }
+  save(); closeDdayModal(); renderDdays();
   if(state.currentView === 'calendar') renderCalDayTodos();
-  showToast('D-Day가 추가되었습니다', 'success');
 }
-function deleteDday(id) { state.ddays = state.ddays.filter(d=>d.id!==id); save(); renderDdays(); }
+function deleteDday(id) {
+  showConfirm('D-Day를 삭제하시겠어요?', () => {
+    state.ddays = state.ddays.filter(d=>d.id!==id); save(); renderDdays();
+  });
+}
 
 // ========== POMODORO ==========
 function renderPomodoro() {
@@ -4032,6 +4278,60 @@ function updatePomoDisplay() {
     sess.innerHTML = dots.join('');
   }
   document.title = state.pomo.running ? `[${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}] TaskFlow` : 'TaskFlow — 스마트 일정 관리';
+}
+function openPomoWindow() {
+  const mode = state.pomo ? state.pomo.mode : 'work';
+  const work = state.pomo ? state.pomo.work : 25;
+  const brk = state.pomo ? state.pomo.break : 5;
+  const lng = state.pomo ? state.pomo.long : 15;
+  const t = state.pomo ? state.pomo.time : work*60;
+  const running = false;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#6c63ff';
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim() || '#1a1a2e';
+  const fg = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim() || '#ffffff';
+  const win = window.open('', 'pomoWindow', 'width=320,height=440,resizable=no,scrollbars=no');
+  if(!win) { showToast('팝업이 차단되었습니다. 팝업 허용 후 다시 시도하세요', 'error'); return; }
+  const fmtTime = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>🍅 뽀모도로</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{background:${bg};color:${fg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:14px}
+h2{font-size:16px;opacity:.7}
+#display{font-size:52px;font-weight:800;letter-spacing:2px;font-variant-numeric:tabular-nums}
+#label{font-size:13px;opacity:.6;margin-top:4px}
+.btns{display:flex;gap:10px}
+button{padding:10px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+#startBtn{background:${accent};color:#fff;min-width:100px}
+#resetBtn{background:rgba(255,255,255,.1);color:${fg}}
+.modes{display:flex;gap:6px}
+.mode-btn{padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:6px;background:transparent;color:${fg};cursor:pointer;font-size:12px}
+.mode-btn.active{background:${accent};border-color:${accent};color:#fff}
+</style></head><body>
+<h2>🍅 뽀모도로 타이머</h2>
+<div class="modes">
+  <button class="mode-btn ${mode==='work'?'active':''}" onclick="setMode('work',${work})">집중</button>
+  <button class="mode-btn ${mode==='break'?'active':''}" onclick="setMode('break',${brk})">짧은휴식</button>
+  <button class="mode-btn ${mode==='long'?'active':''}" onclick="setMode('long',${lng})">긴휴식</button>
+</div>
+<div id="display">${fmtTime(t)}</div>
+<div id="label">${mode==='work'?'집중 시간':mode==='break'?'짧은 휴식':'긴 휴식'}</div>
+<div class="btns">
+  <button id="resetBtn" onclick="reset()">↺</button>
+  <button id="startBtn" onclick="toggle()">▶ 시작</button>
+</div>
+<script>
+let time=${t}, total=${mode==='work'?work*60:mode==='break'?brk*60:lng*60}, running=false, iv=null;
+const labels={work:'집중 시간',break:'짧은 휴식',long:'긴 휴식'};
+let curMode='${mode}', mins={work:${work},break:${brk},long:${lng}};
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function update(){document.getElementById('display').textContent=fmt(time);}
+function toggle(){
+  if(running){clearInterval(iv);iv=null;running=false;document.getElementById('startBtn').textContent='▶ 시작';}
+  else{running=true;document.getElementById('startBtn').textContent='⏸ 일시정지';
+    iv=setInterval(()=>{time--;update();if(time<=0){clearInterval(iv);iv=null;running=false;document.getElementById('startBtn').textContent='▶ 시작';alert(labels[curMode]+' 완료!');}},1000);}
+}
+function reset(){clearInterval(iv);iv=null;running=false;time=total;update();document.getElementById('startBtn').textContent='▶ 시작';}
+function setMode(m,min){clearInterval(iv);iv=null;running=false;curMode=m;total=min*60;time=total;update();document.getElementById('label').textContent=labels[m];document.getElementById('startBtn').textContent='▶ 시작';document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
+<\/script></body></html>`);
+  win.document.close();
 }
 function togglePomo() {
   if(state.pomo.running) { clearInterval(state.pomo.interval); state.pomo.interval=null; state.pomo.running=false; }
@@ -4316,11 +4616,14 @@ function renderGcal() {
     document.getElementById('gcal-connected-section').style.display='block';
     document.getElementById('gcal-account').textContent = state.gcal.account || 'Google 계정';
     const cals = state.gcal.calendars || [];
-    document.getElementById('gcal-calendars').innerHTML = cals.length ? cals.map(c=>`
-      <div style="display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--bg-tertiary);border-radius:var(--radius-xs);font-size:12px;overflow:hidden">
+    if(!state.gcal.enabledCalendars) state.gcal.enabledCalendars = {};
+    document.getElementById('gcal-calendars').innerHTML = cals.length ? cals.map(c=>{
+      const enabled = state.gcal.enabledCalendars[c.id] !== false;
+      return `<label style="display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--bg-tertiary);border-radius:var(--radius-xs);font-size:12px;overflow:hidden;cursor:pointer">
+        <input type="checkbox" ${enabled?'checked':''} style="accent-color:${c.backgroundColor||'#4285f4'};flex-shrink:0" onchange="toggleGcalCalendar('${c.id}',this.checked)">
         <div style="width:10px;height:10px;border-radius:50%;background:${c.backgroundColor||'#4285f4'};flex-shrink:0"></div>
         <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.summary||'캘린더'}</span>
-      </div>`).join('') : `<div style="font-size:12px;color:var(--text-secondary);padding:8px 0">캘린더 목록을 불러오는 중...</div>`;
+      </label>`;}).join('') : `<div style="font-size:12px;color:var(--text-secondary);padding:8px 0">캘린더 목록을 불러오는 중...</div>`;
     const today = todayStr();
     const events = (state.gcal.events||[]);
     const eventsEl = document.getElementById('gcal-upcoming-events');
@@ -4478,6 +4781,11 @@ async function connectGoogleCalendar() {
   connectGoogleCalendarRedirect(clientId);
 }
 
+function toggleGcalCalendar(calId, enabled) {
+  if(!state.gcal.enabledCalendars) state.gcal.enabledCalendars = {};
+  state.gcal.enabledCalendars[calId] = enabled;
+  save();
+}
 function disconnectGcal() {
   const token = state.gcal?.token;
   state.gcal = { connected: false, account: '', token: '', events: [], calendars: [] };
@@ -4597,6 +4905,20 @@ function renderSettings() {
   if(hideCb) hideCb.checked = !!state.hideCompleted;
   applyToastPosition();
   renderGcal();
+  // Sync header image settings
+  const hToggle = document.getElementById('header-img-toggle');
+  if(hToggle) hToggle.checked = !!state.headerImageEnabled;
+  const hPrev = document.getElementById('header-img-preview');
+  const hPrevImg = document.getElementById('header-img-preview-img');
+  if(hPrev) hPrev.style.display = state.headerImageData ? '' : 'none';
+  if(hPrevImg && state.headerImageData) hPrevImg.src = state.headerImageData;
+  // Sync sidebar image settings
+  const sbToggle = document.getElementById('sidebar-img-toggle');
+  if(sbToggle) sbToggle.checked = !!state.sidebarImageEnabled;
+  const sbPrev = document.getElementById('sidebar-img-preview');
+  const sbPrevImg = document.getElementById('sidebar-img-preview-img');
+  if(sbPrev) sbPrev.style.display = state.sidebarImageData ? '' : 'none';
+  if(sbPrevImg && state.sidebarImageData) sbPrevImg.src = state.sidebarImageData;
 }
 function addList() { const v=document.getElementById('new-list-input').value.trim(); if(v&&!state.lists.includes(v)){state.lists.push(v);save();renderSettings();showToast(`'${v}' 리스트 추가됨`,'success');} document.getElementById('new-list-input').value=''; }
 function removeList(l) { if(state.lists.length<=1){showToast('최소 1개의 리스트가 필요합니다','error');return;} state.lists=state.lists.filter(x=>x!==l);save();renderSettings(); }
@@ -4644,7 +4966,7 @@ function applyTheme(t) {
   else if(t==='dark') document.body.removeAttribute('data-theme');
   else document.body.setAttribute('data-theme',t);
   const icon = document.getElementById('theme-icon');
-  if(icon) icon.innerHTML = t==='light'?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';
+  if(icon) icon.innerHTML = '<i class="fa-solid fa-circle-half-stroke"></i>';
   save(); renderSettings();
 }
 function toggleTheme() { applyTheme(state.theme==='dark'?'light':'dark'); }
@@ -4665,6 +4987,12 @@ function setAccentColor(c) {
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   const icon = document.getElementById('sidebar-toggle-icon');
+  const isMobile = window.innerWidth <= 768;
+
+  if(isMobile) {
+    toggleMobileSidebar();
+    return;
+  }
 
   if(sidebar.classList.contains('collapsed')) {
     sidebar.classList.remove('collapsed');
@@ -4842,6 +5170,12 @@ function syncUpdateUI() {
     if(copyBtn) copyBtn.style.display = '';
     if(pushBtn) pushBtn.style.display = '';
     if(pullBtn) pullBtn.style.display = '';
+    // Show sync connected badge
+    const statusEl = document.getElementById('sync-status');
+    if(statusEl && !statusEl.textContent) {
+      statusEl.innerHTML = '<span style="display:inline-flex;align-items:center;gap:5px;background:var(--success);color:#fff;padding:3px 10px;border-radius:var(--radius-xs);font-size:11px;font-weight:600"><i class="fa-solid fa-circle-check"></i> 동기화 코드 활성화됨</span>';
+      statusEl.style.color = '';
+    }
   } else {
     display.value = '';
     if(copyBtn) copyBtn.style.display = 'none';
@@ -4992,6 +5326,8 @@ function init() {
   setPomoTime();
   renderDashboard();
   updateTodoListPanel(state.currentView);
+  applyHeaderImage();
+  applySidebarImage();
   window.addEventListener('resize', checkMobile);
   setInterval(checkDueNotifications, 60000);
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') { document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open')); } if((e.ctrlKey||e.metaKey)&&e.key==='k') { e.preventDefault(); document.getElementById('search-input').focus(); } });
@@ -4999,6 +5335,107 @@ function init() {
   if(today_label) today_label.textContent = fmtFull(todayStr());
 }
 document.addEventListener('DOMContentLoaded', init);
+
+// ========== UTILITY HELPERS ==========
+function showConfirm(msg, onYes) {
+  const overlay = document.getElementById('confirm-overlay');
+  const msgEl = document.getElementById('confirm-msg');
+  const yesBtn = document.getElementById('confirm-yes');
+  const noBtn = document.getElementById('confirm-no');
+  if(!overlay || !msgEl || !yesBtn || !noBtn) { if(confirm(msg)) onYes(); return; }
+  msgEl.textContent = msg;
+  overlay.classList.add('open');
+  const close = () => overlay.classList.remove('open');
+  yesBtn.onclick = () => { close(); onYes(); };
+  noBtn.onclick = close;
+}
+function autoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = (el.scrollHeight) + 'px';
+}
+function updatePinBtnStyle() {
+  const cb = document.getElementById('todo-pin-input');
+  const btn = document.getElementById('todo-pin-btn');
+  if(!btn || !cb) return;
+  if(cb.checked) {
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    btn.style.borderColor = 'var(--accent)';
+  } else {
+    btn.style.background = 'var(--bg-tertiary)';
+    btn.style.color = 'var(--text-muted)';
+    btn.style.borderColor = 'var(--border)';
+  }
+}
+function togglePinBtn() {
+  const cb = document.getElementById('todo-pin-input');
+  if(cb) cb.checked = !cb.checked;
+  updatePinBtnStyle();
+}
+
+// ========== HEADER & SIDEBAR IMAGE ==========
+function uploadHeaderImage(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    state.headerImageData = ev.target.result;
+    save(); applyHeaderImage();
+    const prev = document.getElementById('header-img-preview');
+    const prevImg = document.getElementById('header-img-preview-img');
+    if(prev) prev.style.display = '';
+    if(prevImg) prevImg.src = ev.target.result;
+    showToast('헤더 이미지가 설정되었습니다', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+function removeHeaderImage() {
+  state.headerImageData = null; save(); applyHeaderImage();
+  const prev = document.getElementById('header-img-preview');
+  if(prev) prev.style.display = 'none';
+  showToast('헤더 이미지가 제거되었습니다', 'info');
+}
+function applyHeaderImageToggle(on) {
+  state.headerImageEnabled = on; save(); applyHeaderImage();
+}
+function applyHeaderImage() {
+  const wrap = document.getElementById('topbar-banner-wrap');
+  const img = document.getElementById('header-banner');
+  const on = state.headerImageEnabled && state.headerImageData;
+  if(wrap) wrap.classList.toggle('visible', !!on);
+  if(img && state.headerImageData) img.src = state.headerImageData;
+}
+function uploadSidebarImage(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    state.sidebarImageData = ev.target.result;
+    save(); applySidebarImage();
+    const prev = document.getElementById('sidebar-img-preview');
+    const prevImg = document.getElementById('sidebar-img-preview-img');
+    if(prev) prev.style.display = '';
+    if(prevImg) prevImg.src = ev.target.result;
+    showToast('사이드바 이미지가 설정되었습니다', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+function removeSidebarImage() {
+  state.sidebarImageData = null; save(); applySidebarImage();
+  const prev = document.getElementById('sidebar-img-preview');
+  if(prev) prev.style.display = 'none';
+  showToast('사이드바 이미지가 제거되었습니다', 'info');
+}
+function applySidebarImageToggle(on) {
+  state.sidebarImageEnabled = on; save(); applySidebarImage();
+}
+function applySidebarImage() {
+  const wrap = document.getElementById('sidebar-image-wrap');
+  const on = state.sidebarImageEnabled && state.sidebarImageData;
+  if(!wrap) return;
+  wrap.classList.toggle('visible', !!on);
+  if(on) {
+    wrap.innerHTML = `<img src="${state.sidebarImageData}" alt="">`;
+  }
+}
 </script>
 
 <div class="fab-container" id="global-fabs">
